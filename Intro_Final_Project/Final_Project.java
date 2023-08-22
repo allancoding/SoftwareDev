@@ -3,12 +3,12 @@ package Intro_Final_Project;
 public class Final_Project {
     private static final int BOARD_SIZE = 11;
     private int[] pA = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private int[] pB = {0, 1, 0, 0, 0, 0, 0, 0, 0, 0};
-    private int[] pC = {0, 0, 5, 0, 0, 0, 0, 0, 0, 0};
-    private int[] pD = {0, 0, 0, 6, 0, 0, 0, 0, 0, 0};
-    private int[] pE = {0, 0, 0, 0, 7, 0, 0, 0, 0, 0};
-    private int[] pF = {0, 0, 3, 0, 0, 8, 0, 0, 0, 0};
-    private int[] pG = {0, 0, 0, 0, 4, 0, 9, 0, 0, 0};
+    private int[] pB = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] pC = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] pD = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] pE = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] pF = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] pG = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] pH = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] pI = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] pJ = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -62,7 +62,18 @@ public class Final_Project {
     public Final_Project() {
         //printInstructions();
         cpurandomships();
-        printBoard("cpu"); 
+        humansetships(5, "");
+        printBoard("human"); 
+        //testprintarray();
+    }
+
+    public void testprintarray(){
+        for (int i = 0; i < cpu.length; i++) {
+            for (int j = 0; j < cpu[i].length; j++) {
+                System.out.print(cpu[i][j]);
+            }
+            System.out.println();
+        }
     }
 
     public void clear(){
@@ -80,7 +91,8 @@ public class Final_Project {
         System.out.println("- The goal of the game is to sink all of the enemy ships before they sink yours.");
         System.out.println("- You will choose where it put your ships with the starting coordinate and the direction you want it to go.");
         System.out.println("- You will have 5 ships to place on the board. They are 1x5, 1x4, 1x3, 1x3, and 1x2.");
-        System.out.println("- You will play against a 10x10 board with 5 randomly placed ships on it. - You will play against the computer & it is not AI :(");
+        System.out.println("- You will play against a 10x10 board with 5 randomly placed ships on it.");
+        System.out.println("  ^ You will play against the computer & it is not AI :( - I didn't have enough time, lol");
         System.out.println("- You will take turns guessing where the enemy ships are by entering the coordinate you want to hit.");
         System.out.println("- If you hit a ship, it will be marked with a "+hit+".");
         System.out.println("- If you sink a ship, it will be marked with a "+sunk+".");
@@ -100,43 +112,143 @@ public class Final_Project {
         catch(Exception e){}
     }
 
-    public void cpurandomships(){
+    public void printerror(String error){
+        if(error != ""){
+            System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+error+ANSI_RESET+" ");
+        }
+    }
+
+    public void humansetships(int type, String error){
+        String start = "";
+        String dir = "";
+        printBoard("human");
+        printerror(error);
+        if(type == 5){
+            System.out.println(ANSI_PURPLE_BACKGROUND+ANSI_BLACK+"Aircraft Carrier"+ANSI_RESET+" ");
+            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+            start = System.console().readLine();
+            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+            dir = System.console().readLine();
+            setships(start, dir, 5);
+            printBoard("human");
+            type = 4;
+        }
+        if(type == 4){
+            System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Battleship"+ANSI_RESET+" ");
+            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+            start = System.console().readLine();
+            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+            dir = System.console().readLine();
+            setships(start, dir, 4);
+            printBoard("human");
+            type = 3;
+        }
+        if(type == 3){
+            System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Cruiser"+ANSI_RESET+" ");
+            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+            start = System.console().readLine();
+            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+            dir = System.console().readLine();
+            setships(start, dir, 3);
+            printBoard("human");
+            type = 2;
+        }
+        if(type == 2){
+            System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"Submarine"+ANSI_RESET+" ");
+            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+            start = System.console().readLine();
+            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+            dir = System.console().readLine();
+            setships(start, dir, 3);
+            printBoard("human");
+            type = 1;
+        }
+        if(type == 1){
+            System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Destroyer"+ANSI_RESET+" ");
+            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+            start = System.console().readLine();
+            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+            dir = System.console().readLine();
+            setships(start, dir, 2);
+            printBoard("human");
+        }
+    }
+
+    public void setships(String start, String dir, int length){
+        if (!(start.length() == 2 || (start.length() == 3 && start.substring(1, 3).equals("10")))){
+            humansetships(length,"Coordinate does not exist. Try again.");
+            return;
+        }
+        if (!dir.equalsIgnoreCase("up") && !dir.equalsIgnoreCase("down") &&
+        !dir.equalsIgnoreCase("left") && !dir.equalsIgnoreCase("right")) {
+            humansetships(length,"Invalid Direction. Try again.");
+            return;
+        }
+        String colPart = start.substring(0, 1).toUpperCase();
+        int row = 0;
+        int col = 0;
+        try {
+            row = Integer.parseInt(start.substring(1));
+        } catch (NumberFormatException e) {
+            humansetships(length, "Invalid Number Coordinate. Try again.");
+            return;
+        }
+        boolean validColChar = false;
+        for (int i = 0; i < letters.length; i++) {
+            if (letters[i].equals(colPart)) {
+                col = i;
+                validColChar = true;
+                break;
+            }
+        }
+        if (!validColChar) {
+            humansetships(length, "Invalid Letter Coordinate. Try again.");
+            return;
+        }
+        if (row < 1 || row > 10) {
+            humansetships(length, "Invalid Coordinate. Try again.");
+            return;
+        }
+        row -= 1;
+        System.out.println("row: "+row+" col: "+col);
+        try{System.in.read();}
+        catch(Exception e){}
+    }
+
+    public void cpurandomships() {
         int[] ships = {5, 4, 3, 3, 2};
         for (int i = 0; i < ships.length; i++) {
-            int row = (int)(Math.random() * 10);
-            int col = (int)(Math.random() * 10);
-            int dir = (int)(Math.random() * 4);
-            if(dir == 0){
-                if(row + ships[i] > 10){
-                    row = row - ships[i];
-                }
+            boolean placed = false;
+            while (!placed) {
+                int row = (int)(Math.random() * 10);
+                int col = (int)(Math.random() * 10);
+                int dir = (int)(Math.random() * 4);
+                boolean canPlace = true;
                 for (int j = 0; j < ships[i]; j++) {
-                    cpu[row + j][col] = 1;
+                    int newRow = row, newCol = col;
+                    if (dir == 0) newRow -= j;
+                    else if (dir == 1) newCol += j;
+                    else if (dir == 2) newRow += j;
+                    else if (dir == 3) newCol -= j;
+                    if (newRow < 0 || newRow >= 10 || newCol < 0 || newCol >= 10 || cpu[newRow][newCol] != 0) {
+                        canPlace = false;
+                        break;
+                    }
                 }
-            }else if(dir == 1){
-                if(col + ships[i] > 10){
-                    col = col - ships[i];
-                }
-                for (int j = 0; j < ships[i]; j++) {
-                    cpu[row][col + j] = 1;
-                }
-            }else if(dir == 2){
-                if(row - ships[i] < 0){
-                    row = row + ships[i];
-                }
-                for (int j = 0; j < ships[i]; j++) {
-                    cpu[row - j][col] = 1;
-                }
-            }else if(dir == 3){
-                if(col - ships[i] < 0){
-                    col = col + ships[i];
-                }
-                for (int j = 0; j < ships[i]; j++) {
-                    cpu[row][col - j] = 1;
+                if (canPlace) {
+                    for (int j = 0; j < ships[i]; j++) {
+                        int newRow = row, newCol = col;
+                        if (dir == 0) newRow -= j;
+                        else if (dir == 1) newCol += j;
+                        else if (dir == 2) newRow += j;
+                        else if (dir == 3) newCol -= j;
+                        cpu[newRow][newCol] = i + 5;
+                    }
+                    placed = true;
                 }
             }
         }
-    }
+    }    
 
     public void printBoardLine(int n, int type) {
         System.out.print(ANSI_BLACK);
