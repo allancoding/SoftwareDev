@@ -13,6 +13,7 @@ public class Final_Project {
     private int[] pI = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] pJ = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[][] human = {pA, pB, pC, pD, pE, pF, pG, pH, pI, pJ};
+    private boolean allhumanshipsplaced = false;
     private int[] cA = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] cB = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] cC = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -58,12 +59,13 @@ public class Final_Project {
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    private boolean continuePlacement = true;
 
     public Final_Project() {
         //printInstructions();
-        cpurandomships();
+        //cpurandomships();
         humansetships(5, "");
-        printBoard("human"); 
+        //printBoard("cpu"); 
         //testprintarray();
     }
 
@@ -119,100 +121,148 @@ public class Final_Project {
     }
 
     public void humansetships(int type, String error){
-        String start = "";
-        String dir = "";
-        printBoard("human");
-        printerror(error);
-        if(type == 5){
-            System.out.println(ANSI_PURPLE_BACKGROUND+ANSI_BLACK+"Aircraft Carrier"+ANSI_RESET+" ");
-            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
-            start = System.console().readLine();
-            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
-            dir = System.console().readLine();
-            setships(start, dir, 5);
+        if(!allhumanshipsplaced){
+            String start = "";
+            String dir = "";
             printBoard("human");
-            type = 4;
-        }
-        if(type == 4){
-            System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Battleship"+ANSI_RESET+" ");
-            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
-            start = System.console().readLine();
-            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
-            dir = System.console().readLine();
-            setships(start, dir, 4);
-            printBoard("human");
-            type = 3;
-        }
-        if(type == 3){
-            System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Cruiser"+ANSI_RESET+" ");
-            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
-            start = System.console().readLine();
-            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
-            dir = System.console().readLine();
-            setships(start, dir, 3);
-            printBoard("human");
-            type = 2;
-        }
-        if(type == 2){
-            System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"Submarine"+ANSI_RESET+" ");
-            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
-            start = System.console().readLine();
-            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
-            dir = System.console().readLine();
-            setships(start, dir, 3);
-            printBoard("human");
-            type = 1;
-        }
-        if(type == 1){
-            System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Destroyer"+ANSI_RESET+" ");
-            System.out.println("Enter the starting coordinate of the ship (ex. A1):");
-            start = System.console().readLine();
-            System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
-            dir = System.console().readLine();
-            setships(start, dir, 2);
-            printBoard("human");
+            printerror(error);
+            if (type == 9) {
+                continuePlacement = false;
+            }
+            if (continuePlacement) {
+                if(type == 5){
+                    System.out.println(ANSI_PURPLE_BACKGROUND+ANSI_BLACK+"Aircraft Carrier"+ANSI_RESET+" ");
+                    System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+                    start = System.console().readLine();
+                    System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+                    dir = System.console().readLine();
+                    setships(start, dir, 5, type);
+                    printBoard("human");
+                    humansetships(6, "");
+                }else if(type == 6){
+                    System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Battleship"+ANSI_RESET+" ");
+                    System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+                    start = System.console().readLine();
+                    System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+                    dir = System.console().readLine();
+                    setships(start, dir, 4, type);
+                    printBoard("human");
+                    humansetships(7, "");
+                }else if(type == 7){
+                    System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Cruiser"+ANSI_RESET+" ");
+                    System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+                    start = System.console().readLine();
+                    System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+                    dir = System.console().readLine();
+                    setships(start, dir, 3, type);
+                    printBoard("human");
+                    humansetships(8, "");
+                }else if(type == 8){
+                    System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"Submarine"+ANSI_RESET+" ");
+                    System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+                    start = System.console().readLine();
+                    System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+                    dir = System.console().readLine();
+                    setships(start, dir, 3, type);
+                    printBoard("human");
+                    humansetships(9, "");
+                }
+            }
+
+            if(type == 9){
+                System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Destroyer"+ANSI_RESET+" ");
+                System.out.println("Enter the starting coordinate of the ship (ex. A1):");
+                start = System.console().readLine();
+                System.out.println("Enter the direction of the ship (ex. up, down, left, right):");
+                dir = System.console().readLine();
+                setships(start, dir, 2, type);
+                printBoard("human");
+                System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+                allhumanshipsplaced = true;
+                try{System.in.read();}
+                catch(Exception e){}
+            }
         }
     }
 
-    public void setships(String start, String dir, int length){
-        if (!(start.length() == 2 || (start.length() == 3 && start.substring(1, 3).equals("10")))){
-            humansetships(length,"Coordinate does not exist. Try again.");
-            return;
-        }
-        if (!dir.equalsIgnoreCase("up") && !dir.equalsIgnoreCase("down") &&
-        !dir.equalsIgnoreCase("left") && !dir.equalsIgnoreCase("right")) {
-            humansetships(length,"Invalid Direction. Try again.");
-            return;
-        }
-        String colPart = start.substring(0, 1).toUpperCase();
-        int row = 0;
-        int col = 0;
-        try {
-            row = Integer.parseInt(start.substring(1));
-        } catch (NumberFormatException e) {
-            humansetships(length, "Invalid Number Coordinate. Try again.");
-            return;
-        }
-        boolean validColChar = false;
-        for (int i = 0; i < letters.length; i++) {
-            if (letters[i].equals(colPart)) {
-                col = i;
-                validColChar = true;
-                break;
+    public void setships(String start, String dirr, int length, int type){
+        if(!allhumanshipsplaced){
+            if (!(start.length() == 2 || (start.length() == 3 && start.substring(1, 3).equals("10")))){
+                humansetships(type,"Coordinate does not exist. Try again.");
+                return;
+            }
+            if (!dirr.equalsIgnoreCase("up") && !dirr.equalsIgnoreCase("down") &&
+            !dirr.equalsIgnoreCase("left") && !dirr.equalsIgnoreCase("right")) {
+                humansetships(type,"Invalid Direction. Try again.");
+                return;
+            }
+            dirr = dirr.toLowerCase();
+            String colPart = start.substring(0, 1).toUpperCase();
+            int row = 0;
+            int col = 0;
+            try {
+                row = Integer.parseInt(start.substring(1));
+            } catch (NumberFormatException e) {
+                humansetships(type, "Invalid Number Coordinate. Try again.");
+                return;
+            }
+            boolean validColChar = false;
+            for (int i = 0; i < letters.length; i++) {
+                if (letters[i].equals(colPart)) {
+                    col = i;
+                    validColChar = true;
+                    break;
+                }
+            }
+            if (!validColChar) {
+                humansetships(type, "Invalid Letter Coordinate. Try again.");
+                return;
+            }
+            if (row < 1 || row > 10) {
+                humansetships(type, "Invalid Coordinate. Try again.");
+                return;
+            }
+            row -= 1;
+            int dir = 0;
+            if (dirr.equals("up")){
+                dir = 0;
+            }else if (dirr.equals("down")){
+                dir = 2;
+            }else if (dirr.equals("left")){
+                dir = 3;
+            }else if (dirr.equals("right")){
+                dir = 1;
+            }
+            boolean placed = false;
+            while (!placed) {
+                boolean canPlace = true;
+                for (int j = 0; j < length; j++) {
+                    int newRow = row, newCol = col;
+                    if (dir == 0) newRow -= j;
+                    else if (dir == 1) newCol += j;
+                    else if (dir == 2) newRow += j;
+                    else if (dir == 3) newCol -= j;
+                    if (newRow < 0 || newRow >= 10 || newCol < 0 || newCol >= 10 || human[newRow][newCol] != 0) {
+                        canPlace = false;
+                        break;
+                    }
+                }
+                if (canPlace) {
+                    for (int j = 0; j < length; j++) {
+                        int newRow = row, newCol = col;
+                        if (dir == 0) newRow -= j;
+                        else if (dir == 1) newCol += j;
+                        else if (dir == 2) newRow += j;
+                        else if (dir == 3) newCol -= j;
+                        human[newRow][newCol] =  type;
+                    }
+                    placed = true;
+                }else{
+                    humansetships(type, "Invalid Placement. Try again.");
+                    return;
+                }
             }
         }
-        if (!validColChar) {
-            humansetships(length, "Invalid Letter Coordinate. Try again.");
-            return;
-        }
-        if (row < 1 || row > 10) {
-            humansetships(length, "Invalid Coordinate. Try again.");
-            return;
-        }
-        row -= 1;
-        System.out.println("row: "+row+" col: "+col);
-        try{System.in.read();}
-        catch(Exception e){}
     }
 
     public void cpurandomships() {
