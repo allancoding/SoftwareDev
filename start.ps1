@@ -2,6 +2,6 @@ winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-s
 Set-Location "C:\Users\student\Documents"
 git clone https://github.com/allancoding/SoftwareDev
 git config --global user.name "Allan Niles"
-git config --global user.email "60013695a@gmail.com"
+git config --global user.email "allancoding.dev@gmail.com"
 Set-Location "C:\Users\student\Documents\SoftwareDev"
 code .

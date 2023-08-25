@@ -60,12 +60,14 @@ public class Final_Project {
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     private boolean continuePlacement = true;
+    private int gamelevel = 0;
 
     public Final_Project() {
-        //printInstructions();
-        //cpurandomships();
+        printInstructions();
+        level();
+        cpurandomships();
         humansetships(5, "");
-        //printBoard("cpu"); 
+        printBoard("cpu"); 
         //testprintarray();
     }
 
@@ -109,6 +111,21 @@ public class Final_Project {
         System.out.println("- If you hit all of the ships before the computer hits yours, you win!");
         printBoardLine(11, 3);
         System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"Good luck!"+ANSI_RESET+" ");
+        System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+        try{System.in.read();}
+        catch(Exception e){}
+    }
+
+    public void level(){
+        clear();
+        System.out.println(ANSI_BLACK+ANSI_CYAN_BACKGROUND+"Choose a level:"+ANSI_RESET+" ");
+        printBoardLine(22, 3);
+        System.out.println(ANSI_PURPLE_BACKGROUND+ANSI_BLACK+"1. Easy"+ANSI_RESET+" ");
+        System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"2. Medium"+ANSI_RESET+" ");
+        System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"3. Hard"+ANSI_RESET+" ");
+        System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"4. Impossible"+ANSI_RESET+" ");
+        printBoardLine(11, 3);
+        int start = Integer.parseInt(System.console().readLine());
         System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
         try{System.in.read();}
         catch(Exception e){}
@@ -177,10 +194,7 @@ public class Final_Project {
                 dir = System.console().readLine();
                 setships(start, dir, 2, type);
                 printBoard("human");
-                System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
                 allhumanshipsplaced = true;
-                try{System.in.read();}
-                catch(Exception e){}
             }
         }
     }
