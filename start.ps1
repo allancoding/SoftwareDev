@@ -4,4 +4,5 @@ git clone https://github.com/allancoding/SoftwareDev
 git config --global user.name "Allan Niles"
 git config --global user.email "allancoding.dev@gmail.com"
 Set-Location "C:\Users\student\Documents\SoftwareDev"
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 code .

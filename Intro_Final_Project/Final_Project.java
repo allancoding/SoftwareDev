@@ -1,5 +1,7 @@
 package Intro_Final_Project;
 
+import java.io.Console;
+
 public class Final_Project {
     private static final int BOARD_SIZE = 11;
     private int[] pA = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -60,15 +62,18 @@ public class Final_Project {
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     private boolean continuePlacement = true;
-    private int gamelevel = 0;
+    private int gamelevel = 1;
+    private boolean gamestart = false;
 
     public Final_Project() {
-        printInstructions();
-        level();
+        //printInstructions();
+        //level("");
         cpurandomships();
-        humansetships(5, "");
+        humanhit();
         printBoard("cpu"); 
+        //humansetships(5, "");
         //testprintarray();
+        System.out.println(gamelevel);
     }
 
     public void testprintarray(){
@@ -111,24 +116,189 @@ public class Final_Project {
         System.out.println("- If you hit all of the ships before the computer hits yours, you win!");
         printBoardLine(11, 3);
         System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"Good luck!"+ANSI_RESET+" ");
-        System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
-        try{System.in.read();}
-        catch(Exception e){}
+        waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
     }
 
-    public void level(){
-        clear();
-        System.out.println(ANSI_BLACK+ANSI_CYAN_BACKGROUND+"Choose a level:"+ANSI_RESET+" ");
+    public void humanhit(){
+        printBoard("cpu", true);
+        System.out.println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Where do you want to hit?"+ANSI_RESET+" ");
         printBoardLine(22, 3);
-        System.out.println(ANSI_PURPLE_BACKGROUND+ANSI_BLACK+"1. Easy"+ANSI_RESET+" ");
-        System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"2. Medium"+ANSI_RESET+" ");
-        System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"3. Hard"+ANSI_RESET+" ");
-        System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"4. Impossible"+ANSI_RESET+" ");
+        System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"Enter the coordinate you want to hit (ex. A1):"+ANSI_RESET+" ");
         printBoardLine(11, 3);
-        int start = Integer.parseInt(System.console().readLine());
-        System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
-        try{System.in.read();}
-        catch(Exception e){}
+        String coordinate = System.console().readLine();
+        if (!(coordinate.length() == 2 || (coordinate.length() == 3 && coordinate.substring(1, 3).equals("10")))){
+            humanhit();
+            return;
+        }
+        String colPart = coordinate.substring(0, 1).toUpperCase();
+        int row = 0;
+        int col = 0;
+        try {
+            row = Integer.parseInt(coordinate.substring(1));
+        } catch (NumberFormatException e) {
+            humanhit();
+            return;
+        }
+        boolean validColChar = false;
+        for (int i = 0; i < letters.length; i++) {
+            if (letters[i].equals(colPart)) {
+                col = i;
+                validColChar = true;
+                break;
+            }
+        }
+        if (!validColChar) {
+            humanhit();
+            return;
+        }
+        if (row < 1 || row > 10) {
+            humanhit();
+            return;
+        }
+        row -= 1;
+        if(cpu[row][col] == 0){
+            cpu[row][col] = 4;
+        }else if(cpu[row][col] == 1){
+            cpu[row][col] = 2; 
+        }else if(cpu[row][col] == 2){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 3){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 4){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 5){
+            cpu[row][col] = 10;
+        }else if(cpu[row][col] == 6){
+            cpu[row][col] = 11;
+        }else if(cpu[row][col] == 7){
+            cpu[row][col] = 12;
+        }else if(cpu[row][col] == 8){
+            cpu[row][col] = 13;
+        }else if(cpu[row][col] == 9){
+            cpu[row][col] = 14;
+        }else if(cpu[row][col] == 10){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 11){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 12){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 13){
+            humanhit();
+            return;
+        }else if(cpu[row][col] == 14){
+            humanhit();
+            return;
+        }
+        printBoard("cpu", true);
+        if(cpu[row][col] == 2){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You hit a ship!"+ANSI_RESET+" ");
+        }else if(cpu[row][col] == 4){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You missed!"+ANSI_RESET+" ");
+        }else if(cpu[row][col] == 10){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Aircraft Carrier!"+ANSI_RESET+" ");
+        }else if(cpu[row][col] == 11){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Battleship!"+ANSI_RESET+" ");
+        }else if(cpu[row][col] == 12){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Cruiser!"+ANSI_RESET+" ");
+        }else if(cpu[row][col] == 13){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Submarine!"+ANSI_RESET+" ");
+        }else if(cpu[row][col] == 14){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Destroyer!"+ANSI_RESET+" ");
+        }
+        waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+    }
+
+    public void startgame(String error, int start){
+        clear();
+        System.out.println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Are you ready to start?"+ANSI_RESET+" ");
+        printBoardLine(22, 3);
+        if(gamelevel == 1){
+            System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Difficulty:"+ANSI_RESET+" "+ANSI_BLACK+ANSI_GREEN_BACKGROUND+"Easy"+ANSI_RESET);
+        }else if(gamelevel == 2){
+            System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Difficulty:"+ANSI_RESET+" "+ANSI_BLACK+ANSI_BLUE_BACKGROUND+"Medium"+ANSI_RESET);
+        }else if(gamelevel == 3){
+            System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Difficulty:"+ANSI_RESET+" "+ANSI_BLACK+ANSI_YELLOW_BACKGROUND+"Hard"+ANSI_RESET);
+        }else if(gamelevel == 4){
+            System.out.println(ANSI_CYAN_BACKGROUND+ANSI_BLACK+"Difficulty:"+ANSI_RESET+" "+ANSI_BLACK+ANSI_RED_BACKGROUND+"Impossible"+ANSI_RESET);
+        }
+        printBoardLine(11, 3);
+        System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
+        System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
+        printBoardLine(11, 3);
+        if(error != ""){
+            System.out.println(error);
+        }
+        if(start != 2){
+            try{
+                start = Integer.parseInt(System.console().readLine());
+            }catch(Exception e){
+                start = 0;
+            }
+        }
+        if(start == 1){
+            System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"Let's go!"+ANSI_RESET+" ");
+        }else if(start == 2){
+            clear();
+            System.out.println(ANSI_PURPLE_BACKGROUND+ANSI_BLACK+"Do you want to change the level?"+ANSI_RESET+" ");
+            printBoardLine(22, 3);
+            System.out.println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
+            System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
+            printBoardLine(11, 3);
+            if(error != ""){
+                System.out.println(error);
+            }
+            int start2;
+            try{
+                start2 = Integer.parseInt(System.console().readLine());
+            }catch(Exception e){
+                start2 = 0;
+            }
+            if(start2 == 1){
+                level("");
+            }else if(start2 == 2){
+                clear();
+                System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Bye Bye..."+ANSI_RESET+" ");
+                System.exit(0);
+            }else{
+                startgame(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ",2);
+            }
+        }else{
+            startgame(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ",0);
+        }
+        if(gamestart == false){
+            gamestart = true;
+            waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+        }
+    }
+
+    public void level(String error){
+        clear();
+        System.out.println(ANSI_BLACK+ANSI_CYAN_BACKGROUND+"Please choose a level:"+ANSI_RESET+" ");
+        printBoardLine(22, 3);
+        System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"1. Easy "+ANSI_RESET+" ");
+        System.out.println(ANSI_BLACK+ANSI_BLUE_BACKGROUND+"2. Medium "+ANSI_RESET+" ");
+        System.out.println(ANSI_BLACK+ANSI_YELLOW_BACKGROUND+"3. Hard "+ANSI_RESET+" ");
+        System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"4. Impossible "+ANSI_RESET+" ");
+        printBoardLine(11, 3);
+        if(error != ""){
+            System.out.println(error);
+        }
+        int start = 0;
+        try{
+            start = Integer.parseInt(System.console().readLine());
+        }catch(Exception e){
+            level(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
+        }
+        if(start != 0){
+            gamelevel = start;
+            startgame("", 0);
+        }
     }
 
     public void printerror(String error){
@@ -136,6 +306,16 @@ public class Final_Project {
             System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+error+ANSI_RESET+" ");
         }
     }
+
+    public void waitForEnter(String message, Object... args) {
+    Console c = System.console();
+    if (c != null) {
+        if (message != null)
+            c.format(message, args);
+        c.format("\n");
+        c.readLine();
+    }
+}
 
     public void humansetships(int type, String error){
         if(!allhumanshipsplaced){
@@ -355,7 +535,7 @@ public class Final_Project {
         }
     }
     
-    private void printData(int row, int col, String player){
+    private void printData(int row, int col, String player, boolean hidden){
         if(row == 0){
             if(col == 0) {
                 System.out.print("  ");
@@ -371,63 +551,119 @@ public class Final_Project {
                 System.out.print(" "+row);
             }
         }else{
-            printChar(row, col, player);
+            printChar(row, col, player, hidden);
         }
     }
 
-    private void printChar(int row, int col, String player){
+    private void printChar(int row, int col, String player, boolean hidden){
         int[][] arrays;
         if(player == "human") {
             arrays = human;
         }else{
             arrays = cpu;
         }
-        if(arrays[row - 1][col - 1] == 0){
-            System.out.print(" "); //empty
-        }else if(arrays[row - 1][col - 1] == 1){
-            System.out.print(ANSI_BLACK+ship); //ship
-        }else if(arrays[row - 1][col - 1] == 2){
-            System.out.print(hit); //hit
-        }else if(arrays[row - 1][col - 1] == 3){
-            System.out.print(sunk); //sunk
-        }else if(arrays[row - 1][col - 1] == 4){
-            System.out.print(miss); //miss
-        }else if(arrays[row - 1][col - 1] == 5){
-            System.out.print(ANSI_PURPLE+ship); //aircraft carrier
-        }else if(arrays[row - 1][col - 1] == 6){
-            System.out.print(ANSI_CYAN+ship); //battleship
-        }else if(arrays[row - 1][col - 1] == 7){
-            System.out.print(ANSI_YELLOW+ship); //cruiser
-        }else if(arrays[row - 1][col - 1] == 8){
-            System.out.print(ANSI_GREEN+ship); //submarine
-        }else if(arrays[row - 1][col - 1] == 9){
-            System.out.print(ANSI_RED+ship); //destroyer
-        }else if(arrays[row - 1][col - 1] == 10){
-            System.out.print(ANSI_PURPLE+hit); //aircraft carrier hit
-        }else if(arrays[row - 1][col - 1] == 11){
-            System.out.print(ANSI_CYAN+hit); //battleship hit
-        }else if(arrays[row - 1][col - 1] == 12){
-            System.out.print(ANSI_YELLOW+hit); //cruiser hit
-        }else if(arrays[row - 1][col - 1] == 13){
-            System.out.print(ANSI_GREEN+hit); //submarine hit
-        }else if(arrays[row - 1][col - 1] == 14){
-            System.out.print(ANSI_RED+hit); //destroyer hit
-        }else if(arrays[row - 1][col - 1] == 15){
-            System.out.print(ANSI_PURPLE+sunk); //aircraft carrier sunk
-        }else if(arrays[row - 1][col - 1] == 16){
-            System.out.print(ANSI_CYAN+sunk); //battleship sunk
-        }else if(arrays[row - 1][col - 1] == 17){
-            System.out.print(ANSI_YELLOW+sunk); //cruiser sunk
-        }else if(arrays[row - 1][col - 1] == 18){
-            System.out.print(ANSI_GREEN+sunk); //submarine sunk
-        }else if(arrays[row - 1][col - 1] == 19){
-            System.out.print(ANSI_RED+sunk); //destroyer sunk
+        String shipout = "";
+        String hide = "";
+        if(hidden == true){
+            hide = ANSI_BLACK;
         }
-        System.out.print(ANSI_BLACK);
+        if(arrays[row - 1][col - 1] == 0){
+            shipout = " "; //empty
+        }else if(arrays[row - 1][col - 1] == 1){
+            if(hidden == true){
+                shipout = " "; //empty
+            }else{
+                shipout = ANSI_BLACK+ship; //ship
+            }
+        }else if(arrays[row - 1][col - 1] == 2){
+            shipout = hit+""; //hit
+        }else if(arrays[row - 1][col - 1] == 3){
+            shipout = sunk+""; //sunk
+        }else if(arrays[row - 1][col - 1] == 4){
+            shipout = miss+""; //miss
+        }else if(arrays[row - 1][col - 1] == 5){
+            if(hidden == true){
+                shipout = " "; //empty
+            }else{
+                shipout = ANSI_PURPLE+ship; //aircraft carrier
+            }
+        }else if(arrays[row - 1][col - 1] == 6){
+            if(hidden == true){
+                shipout = " "; //empty
+            }else{
+                shipout = ANSI_CYAN+ship; //battleship
+            }
+        }else if(arrays[row - 1][col - 1] == 7){
+            if(hidden == true){
+                shipout = " "; //empty
+            }else{
+                shipout = ANSI_YELLOW+ship; //cruiser
+            }
+        }else if(arrays[row - 1][col - 1] == 8){
+            if(hidden == true){
+                shipout = " "; //empty
+            }else{
+                shipout = ANSI_GREEN+ship; //submarine
+            }
+        }else if(arrays[row - 1][col - 1] == 9){
+            if(hidden == true){
+                shipout = " "; //empty
+            }else{
+                shipout = ANSI_RED+ship; //destroyer
+            }
+        }else if(arrays[row - 1][col - 1] == 10){
+            if(hidden == true){
+                shipout = hit+""; //hit
+            }else{
+                shipout = ANSI_PURPLE+hit; //aircraft carrier hit
+            }
+        }else if(arrays[row - 1][col - 1] == 11){
+            if(hidden == true){
+                shipout = hit+""; //hit
+            }else{
+                shipout = ANSI_CYAN+hit; //battleship hit
+            }
+        }else if(arrays[row - 1][col - 1] == 12){
+            if(hidden == true){
+                shipout = hit+""; //hit
+            }else{
+                shipout = ANSI_YELLOW+hit; //cruiser hit
+            }
+        }else if(arrays[row - 1][col - 1] == 13){
+            if(hidden == true){
+                shipout = hit+""; //hit
+            }else{
+                shipout = ANSI_GREEN+hit; //submarine hit
+            }
+        }else if(arrays[row - 1][col - 1] == 14){
+            if(hidden == true){
+                shipout = hit+""; //hit
+            }else{
+                shipout = ANSI_RED+hit; //destroyer hit
+            }
+        }else if(arrays[row - 1][col - 1] == 15){
+            shipout = ANSI_PURPLE+sunk; //aircraft carrier sunk
+        }else if(arrays[row - 1][col - 1] == 16){
+            shipout = ANSI_CYAN+sunk; //battleship sunk
+        }else if(arrays[row - 1][col - 1] == 17){
+            shipout = ANSI_YELLOW+sunk; //cruiser sunk
+        }else if(arrays[row - 1][col - 1] == 18){
+            shipout = ANSI_GREEN+sunk; //submarine sunk
+        }else if(arrays[row - 1][col - 1] == 19){
+            shipout = ANSI_RED+sunk; //destroyer sunk
+        }
+        System.out.print(shipout+ANSI_BLACK);
     }
 
-    private void printBoard(String player) {
+    private void printBoard(String player, boolean... hidden) {
         clear();
+        boolean hide = false;
+        for (boolean h : hidden) {
+            if (h) {
+                hide = true;
+                break;
+            }
+        }
         if(player == "human") {
             System.out.println(ANSI_GREEN+"Your Board:"+ANSI_RESET);
         }else if (player == "cpu"){
@@ -444,7 +680,7 @@ public class Final_Project {
                 }else{
                     System.out.print(" "+side+" ");
                 }
-                printData(i, j, player);
+                printData(i, j, player, hide);
                 if (j == (BOARD_SIZE - 1)) {
                     System.out.print(" "+side);
                 }
