@@ -1,6 +1,9 @@
 package Intro_Final_Project;
 
 import java.io.Console;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class Final_Project {
     private static final int BOARD_SIZE = 11;
@@ -64,24 +67,40 @@ public class Final_Project {
     private boolean continuePlacement = true;
     private int gamelevel = 1;
     private boolean gamestart = false;
+    private boolean allhumanshipshavebeensunk = false;
+    private boolean allcpushipshavebeensunk = false;
+    private int[] humanhits = {0, 0, 0, 0, 0};
+    private int[] cpuhits = {0, 0, 0, 0, 0};
 
     public Final_Project() {
         //printInstructions();
         //level("");
         cpurandomships();
-        humanhit();
-        printBoard("cpu"); 
+        testprintarray();
+        while (!allhumanshipshavebeensunk) {
+            humanhit("");
+        }
+        // printBoard("cpu"); 
         //humansetships(5, "");
         //testprintarray();
         System.out.println(gamelevel);
     }
 
     public void testprintarray(){
-        for (int i = 0; i < cpu.length; i++) {
-            for (int j = 0; j < cpu[i].length; j++) {
-                System.out.print(cpu[i][j]);
+        File file = new File(System.getProperty("user.dir"),"Intro_Final_Project/cheat.txt");
+        if (file.exists()) {
+            try {
+                PrintWriter writer = new PrintWriter(file);
+                for (int i = 0; i < cpu.length; i++) {
+                    for (int j = 0; j < cpu[i].length; j++) {
+                        writer.print(cpu[i][j]+" ");
+                    }
+                    writer.println();
+                }
+                writer.close();
+            } catch (FileNotFoundException fnfe){
+                System.out.println(fnfe);
             }
-            System.out.println();
         }
     }
 
@@ -119,15 +138,18 @@ public class Final_Project {
         waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
     }
 
-    public void humanhit(){
+    public void humanhit(String error){
         printBoard("cpu", true);
         System.out.println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Where do you want to hit?"+ANSI_RESET+" ");
         printBoardLine(22, 3);
         System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"Enter the coordinate you want to hit (ex. A1):"+ANSI_RESET+" ");
         printBoardLine(11, 3);
+        if(error != ""){
+            System.out.println(ANSI_RED_BACKGROUND+ANSI_BLACK+error+ANSI_RESET+" ");
+        }
         String coordinate = System.console().readLine();
         if (!(coordinate.length() == 2 || (coordinate.length() == 3 && coordinate.substring(1, 3).equals("10")))){
-            humanhit();
+            humanhit("Coordinate does not exist. Try again.");
             return;
         }
         String colPart = coordinate.substring(0, 1).toUpperCase();
@@ -136,7 +158,7 @@ public class Final_Project {
         try {
             row = Integer.parseInt(coordinate.substring(1));
         } catch (NumberFormatException e) {
-            humanhit();
+            humanhit("Invalid Number Coordinate. Try again.");
             return;
         }
         boolean validColChar = false;
@@ -148,70 +170,123 @@ public class Final_Project {
             }
         }
         if (!validColChar) {
-            humanhit();
+            humanhit("Invalid Letter Coordinate. Try again.");
             return;
         }
         if (row < 1 || row > 10) {
-            humanhit();
+            humanhit("Invalid Coordinate. Try again.");
             return;
         }
         row -= 1;
-        if(cpu[row][col] == 0){
+        int shipcore = cpu[row][col];
+        int type = 0;
+        if(shipcore == 0){
             cpu[row][col] = 4;
-        }else if(cpu[row][col] == 1){
-            cpu[row][col] = 2; 
-        }else if(cpu[row][col] == 2){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 3){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 4){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 5){
-            cpu[row][col] = 10;
-        }else if(cpu[row][col] == 6){
-            cpu[row][col] = 11;
-        }else if(cpu[row][col] == 7){
-            cpu[row][col] = 12;
-        }else if(cpu[row][col] == 8){
-            cpu[row][col] = 13;
-        }else if(cpu[row][col] == 9){
-            cpu[row][col] = 14;
-        }else if(cpu[row][col] == 10){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 11){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 12){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 13){
-            humanhit();
-            return;
-        }else if(cpu[row][col] == 14){
-            humanhit();
-            return;
+            type = 1;
+        }else if(shipcore == 2){
+            type = 9;
+        }else if(shipcore == 4){
+            type = 10;
+        }else if(shipcore == 5){
+            cpu[row][col] = 2;
+            type = 2;
+            if(checksunk(5, "cpu") == true){
+                type = 3;
+                sinkship(15, "cpu");
+            }
+        }else if(shipcore == 6){
+            cpu[row][col] = 2;
+            type = 2;
+            if(checksunk(6, "cpu") == true){
+                type = 4;
+                sinkship(16, "cpu");
+            }
+        }else if(shipcore == 7){
+            cpu[row][col] = 2;
+            type = 2;
+            if(checksunk(7, "cpu") == true){
+                type = 5;
+                sinkship(17, "cpu");
+            }
+        }else if(shipcore == 8){
+            cpu[row][col] = 2;
+            type = 2;
+            if(checksunk(8, "cpu") == true){
+                type = 6;
+                sinkship(18, "cpu");
+            }
+        }else if(shipcore == 9){
+            cpu[row][col] = 2;
+            type = 2;
+            if(checksunk(9, "cpu") == true){
+                type = 7;
+                sinkship(19, "cpu");
+            }
+        }
+        if(checksunk(5, "cpu") == true && checksunk(6, "cpu") == true && checksunk(7, "cpu") == true && checksunk(8, "cpu") == true && checksunk(9, "cpu") == true){
+            type = 8;
         }
         printBoard("cpu", true);
-        if(cpu[row][col] == 2){
+        if(type == 1){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You missed!"+ANSI_RESET+" ");
+        }else if(type == 2){
             System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You hit a ship!"+ANSI_RESET+" ");
-        }else if(cpu[row][col] == 4){
-            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You missed!"+ANSI_RESET+" ");
-        }else if(cpu[row][col] == 10){
+        }else if(type == 3){
             System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Aircraft Carrier!"+ANSI_RESET+" ");
-        }else if(cpu[row][col] == 11){
+        }else if(type == 4){
             System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Battleship!"+ANSI_RESET+" ");
-        }else if(cpu[row][col] == 12){
+        }else if(type == 5){
             System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Cruiser!"+ANSI_RESET+" ");
-        }else if(cpu[row][col] == 13){
+        }else if(type == 6){
             System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Submarine!"+ANSI_RESET+" ");
-        }else if(cpu[row][col] == 14){
+        }else if(type == 7){
             System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Destroyer!"+ANSI_RESET+" ");
+        }else if(type == 8){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk all of the ships!"+ANSI_RESET+" ");
+        }else if(type == 9){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You already hit that ship!"+ANSI_RESET+" ");
+        }else if(type == 10){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You already missed there!"+ANSI_RESET+" ");
         }
         waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+    }
+
+    public void sinkship(int type, String player){
+        int[][] arrays;
+        if(player == "human") {
+            arrays = human;
+        }else{
+            arrays = cpu;
+        }
+        for (int i = 0; i < arrays.length; i++) {
+            for (int j = 0; j < arrays[i].length; j++) {
+                if(arrays[i][j] == type){
+                    arrays[i][j] = 3;
+                }
+            }
+        }
+    }
+
+    public boolean checksunk(int type, String player){
+        int[][] arrays;
+        if(player == "human") {
+            arrays = human;
+        }else{
+            arrays = cpu;
+        }
+        int count = 0;
+        for (int i = 0; i < arrays.length; i++) {
+            for (int j = 0; j < arrays[i].length; j++) {
+                if(arrays[i][j] == type){
+                    count++;
+                }
+            }
+        }
+        if(count == 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void startgame(String error, int start){
@@ -563,10 +638,6 @@ public class Final_Project {
             arrays = cpu;
         }
         String shipout = "";
-        String hide = "";
-        if(hidden == true){
-            hide = ANSI_BLACK;
-        }
         if(arrays[row - 1][col - 1] == 0){
             shipout = " "; //empty
         }else if(arrays[row - 1][col - 1] == 1){
