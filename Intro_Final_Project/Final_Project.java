@@ -45,7 +45,7 @@ public class Final_Project {
     private char ship = 0x2588;
     private char shipbox = 0x25A0;
     private char hit = 0x2593;
-    private char sunk = 0x2591;
+    private char sunk = 0x2592;
     private char miss = 0x2248;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -69,16 +69,15 @@ public class Final_Project {
     private boolean gamestart = false;
     private boolean allhumanshipshavebeensunk = false;
     private boolean allcpushipshavebeensunk = false;
-    private int[] humanhits = {0, 0, 0, 0, 0};
-    private int[] cpuhits = {0, 0, 0, 0, 0};
 
     public Final_Project() {
         //printInstructions();
-        //level("");
+        level("");
         cpurandomships();
         testprintarray();
-        while (!allhumanshipshavebeensunk) {
+        while (!allhumanshipshavebeensunk && !allcpushipshavebeensunk) {
             humanhit("");
+            cpuhit();
         }
         // printBoard("cpu"); 
         //humansetships(5, "");
@@ -138,6 +137,112 @@ public class Final_Project {
         waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
     }
 
+    public void cpuhit(){
+        printBoard("human");
+        System.out.println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"The computer is thinking..."+ANSI_RESET+" ");
+        try {
+            Thread.sleep((int)(Math.random() * 2000) + 100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        printBoardLine(22, 3);
+        int hitrate = -1;
+        if (gamelevel == 1) {
+            hitrate = (Math.random() < 0.03) ? 1 : 0;
+        } else if (gamelevel == 2) {
+            hitrate = (Math.random() < 0.2) ? 1 : 0;
+        } else if (gamelevel == 3) {
+            hitrate = (Math.random() < 0.4) ? 1 : 0;
+        } else if (gamelevel == 4) {
+            hitrate = (Math.random() < 0.95) ? 1 : 0;
+        }
+        int shipcore = 0;
+        int typerow = 0;
+        int typecol = 0;
+        if(hitrate == 0){
+            int row = (int)(Math.random() * 10);
+            int col = (int)(Math.random() * 10);
+            while(human[row][col] != 0){
+                row = (int)(Math.random() * 10);
+                col = (int)(Math.random() * 10);
+            }
+            shipcore = human[row][col];
+            typerow = row;
+            typecol = col;
+        }else if(hitrate == 1){
+            int row = (int)(Math.random() * 10);
+            int col = (int)(Math.random() * 10);
+            while (human[row][col] >= 5 && human[row][col] <= 9) {
+                row = (int) (Math.random() * 10);
+                col = (int) (Math.random() * 10);
+            }
+            shipcore = human[row][col];
+            typerow = row;
+            typecol = col;
+        }
+        int type = 0;
+        if(shipcore == 0){
+            type = 1;
+            human[typerow][typecol] = 4;
+        }else if(shipcore == 4){
+            type = 10;
+            human[typerow][typecol] = 11;
+        }else if(shipcore == 5){
+            type = 2;
+            if(checksunk(5, "human") == true){
+                type = 3;
+                sinkship(15, "human");
+            }
+        }else if(shipcore == 6){
+            type = 2;
+            if(checksunk(6, "human") == true){
+                type = 4;
+                sinkship(16, "human");
+            }
+        }else if(shipcore == 7){
+            type = 2;
+            if(checksunk(7, "human") == true){
+                type = 5;
+                sinkship(17, "human");
+            }
+        }else if(shipcore == 8){
+            type = 2;
+            if(checksunk(8, "human") == true){
+                type = 6;
+                sinkship(18, "human");
+            }
+        }else if(shipcore == 9){
+            type = 2;
+            if(checksunk(9, "human") == true){
+                type = 7;
+                sinkship(19, "human");
+            }
+        }
+        if(checksunk(5, "human") == true && checksunk(6, "human") == true && checksunk(7, "human") == true && checksunk(8, "human") == true && checksunk(9, "human") == true){
+            allhumanshipshavebeensunk = true;
+            type = 8;
+        }
+        printBoard("human");
+        if(type == 1){
+            System.out.println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"The computer missed!"+ANSI_RESET+" ");
+        }else if(type == 2){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit a ship!"+ANSI_RESET+" ");
+        }else if(type == 3){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Aircraft Carrier!"+ANSI_RESET+" ");
+        }else if(type == 4){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Battleship!"+ANSI_RESET+" ");
+        }else if(type == 5){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Cruiser!"+ANSI_RESET+" ");
+        }else if(type == 6){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Submarine!"+ANSI_RESET+" ");
+        }else if(type == 7){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Destroyer!"+ANSI_RESET+" ");
+        }else if(type == 8){
+            System.out.println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk all of the ships!"+ANSI_RESET+" ");
+        }
+        waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+    }
+
     public void humanhit(String error){
         printBoard("cpu", true);
         System.out.println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Where do you want to hit?"+ANSI_RESET+" ");
@@ -188,42 +293,45 @@ public class Final_Project {
         }else if(shipcore == 4){
             type = 10;
         }else if(shipcore == 5){
-            cpu[row][col] = 2;
+            cpu[row][col] = 10;
             type = 2;
             if(checksunk(5, "cpu") == true){
                 type = 3;
                 sinkship(15, "cpu");
             }
         }else if(shipcore == 6){
-            cpu[row][col] = 2;
+            cpu[row][col] = 11;
             type = 2;
             if(checksunk(6, "cpu") == true){
                 type = 4;
                 sinkship(16, "cpu");
             }
         }else if(shipcore == 7){
-            cpu[row][col] = 2;
+            cpu[row][col] = 12;
             type = 2;
             if(checksunk(7, "cpu") == true){
                 type = 5;
                 sinkship(17, "cpu");
             }
         }else if(shipcore == 8){
-            cpu[row][col] = 2;
+            cpu[row][col] = 13;
             type = 2;
             if(checksunk(8, "cpu") == true){
                 type = 6;
                 sinkship(18, "cpu");
             }
         }else if(shipcore == 9){
-            cpu[row][col] = 2;
+            cpu[row][col] = 14;
             type = 2;
             if(checksunk(9, "cpu") == true){
                 type = 7;
                 sinkship(19, "cpu");
             }
+        }else{
+            type = 9;
         }
         if(checksunk(5, "cpu") == true && checksunk(6, "cpu") == true && checksunk(7, "cpu") == true && checksunk(8, "cpu") == true && checksunk(9, "cpu") == true){
+            allcpushipshavebeensunk = true;
             type = 8;
         }
         printBoard("cpu", true);
@@ -251,42 +359,43 @@ public class Final_Project {
         waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
     }
 
-    public void sinkship(int type, String player){
+    public void sinkship(int type, String player) {
         int[][] arrays;
-        if(player == "human") {
+        if (player.equals("human")) {
             arrays = human;
-        }else{
+        } else if (player.equals("cpu")) {
             arrays = cpu;
+        } else {
+            return;
         }
+        int shiptype = type - 5;
         for (int i = 0; i < arrays.length; i++) {
             for (int j = 0; j < arrays[i].length; j++) {
-                if(arrays[i][j] == type){
-                    arrays[i][j] = 3;
+                if (arrays[i][j] == shiptype) {
+                    arrays[i][j] = type;
                 }
             }
         }
     }
+    
 
-    public boolean checksunk(int type, String player){
+    public boolean checksunk(int type, String player) {
         int[][] arrays;
-        if(player == "human") {
+        if (player.equals("human")) {
             arrays = human;
-        }else{
+        } else if (player.equals("cpu")) {
             arrays = cpu;
+        } else {
+            return false;
         }
-        int count = 0;
         for (int i = 0; i < arrays.length; i++) {
             for (int j = 0; j < arrays[i].length; j++) {
                 if(arrays[i][j] == type){
-                    count++;
+                    return false;
                 }
             }
         }
-        if(count == 0){
-            return true;
-        }else{
-            return false;
-        }
+        return true;
     }
 
     public void startgame(String error, int start){
@@ -713,15 +822,15 @@ public class Final_Project {
                 shipout = ANSI_RED+hit; //destroyer hit
             }
         }else if(arrays[row - 1][col - 1] == 15){
-            shipout = ANSI_PURPLE+sunk; //aircraft carrier sunk
+            shipout = ANSI_RESET+ANSI_PURPLE+sunk+ANSI_BLUE_BACKGROUND; //aircraft carrier sunk
         }else if(arrays[row - 1][col - 1] == 16){
-            shipout = ANSI_CYAN+sunk; //battleship sunk
+            shipout = ANSI_RESET+ANSI_CYAN+sunk+ANSI_BLUE_BACKGROUND; //battleship sunk
         }else if(arrays[row - 1][col - 1] == 17){
-            shipout = ANSI_YELLOW+sunk; //cruiser sunk
+            shipout = ANSI_RESET+ANSI_YELLOW+sunk+ANSI_BLUE_BACKGROUND; //cruiser sunk
         }else if(arrays[row - 1][col - 1] == 18){
-            shipout = ANSI_GREEN+sunk; //submarine sunk
+            shipout = ANSI_RESET+ANSI_GREEN+sunk+ANSI_BLUE_BACKGROUND; //submarine sunk
         }else if(arrays[row - 1][col - 1] == 19){
-            shipout = ANSI_RED+sunk; //destroyer sunk
+            shipout = ANSI_RESET+ANSI_RED+sunk+ANSI_BLUE_BACKGROUND; //destroyer sunk
         }
         System.out.print(shipout+ANSI_BLACK);
     }
