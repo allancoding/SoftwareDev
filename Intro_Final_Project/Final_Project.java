@@ -2,8 +2,11 @@ package Intro_Final_Project;
 
 import java.io.Console;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 public class Final_Project {
     private static final int BOARD_SIZE = 11;
@@ -74,10 +77,10 @@ public class Final_Project {
         if(instructions == true){
             printInstructions();
         }
-        level("");
         cpurandomships();
+        level("");
         humansetships(5, "");
-        //testprintarray();
+        checkshipplacement();
         while (!allhumanshipshavebeensunk && !allcpushipshavebeensunk) {
             if(!allhumanshipshavebeensunk && !allcpushipshavebeensunk){
                 humanhit("");
@@ -89,24 +92,19 @@ public class Final_Project {
         endgame();
     }
 
-    public void testprintarray(){
-        File file = new File(System.getProperty("user.dir"),"Intro_Final_Project/cheat.txt");
-        if (file.exists()) {
-            try {
-                PrintWriter writer = new PrintWriter(file);
-                for (int i = 0; i < cpu.length; i++) {
-                    for (int j = 0; j < cpu[i].length; j++) {
-                        writer.print(cpu[i][j]+" ");
-                    }
-                    writer.println();
-                }
-                writer.close();
-            } catch (FileNotFoundException fnfe){
-                println(fnfe+"");
+    public void cheat() {
+        String workingDirectory = System.getProperty("user.dir");
+        String fileName = "cheat.txt";
+        String filePath = workingDirectory + File.separator + fileName;
+        try {
+            try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
+                printcheatBoard(writer);
             }
+        } catch (IOException e) {
+            System.err.println("Error creating/writing the file: " + e.getMessage());
         }
     }
-
+    
     public void clear(){
         print("\033[H\033[2J");
     }
@@ -355,30 +353,31 @@ public class Final_Project {
             type = 8;
         }
         printBoard("human");
+        String cpucore = letters[typecol]+(typerow+1);
         if(type == 1){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"The computer missed!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"The computer missed at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 3){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Aircraft Carrier!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Aircraft Carrier at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 4){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Battleship!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Battleship at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 5){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Cruiser!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Cruiser at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 6){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Submarine!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Submarine at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 7){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Destroyer!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk the Destroyer at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 8){
             println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer sunk all of the ships!"+ANSI_RESET+" ");
         }else if(type == 9){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Aircraft Carrier!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Aircraft Carrier at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 10){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Battleship!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Battleship at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 11){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Cruiser!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Cruiser at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 12){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Submarine!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Submarine at "+cpucore+"!"+ANSI_RESET+" ");
         }else if(type == 13){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Destroyer!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"The computer hit your Destroyer at "+cpucore+"!"+ANSI_RESET+" ");
         }
         waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
     }
@@ -475,26 +474,27 @@ public class Final_Project {
             type = 8;
         }
         printBoard("cpu", true);
+        String humancore = letters[col]+(row+1);
         if(type == 1){
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You missed!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You missed at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 2){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You hit a ship!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You hit a ship at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 3){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Aircraft Carrier!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Aircraft Carrier at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 4){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Battleship!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Battleship at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 5){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Cruiser!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Cruiser at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 6){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Submarine!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Submarine at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 7){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Destroyer!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk the Destroyer at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 8){
             println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You sunk all of the computers ships!"+ANSI_RESET+" ");
         }else if(type == 9){
-            humanhit(ANSI_BLACK+ANSI_RED_BACKGROUND+"You already hit that ship!"+ANSI_RESET+" ");
+            humanhit(ANSI_BLACK+ANSI_RED_BACKGROUND+"You already hit that ship at "+humancore+"!"+ANSI_RESET+" ");
         }else if(type == 10){
-            humanhit(ANSI_BLACK+ANSI_RED_BACKGROUND+"You already missed there!"+ANSI_RESET+" ");
+            humanhit(ANSI_BLACK+ANSI_RED_BACKGROUND+"You already missed at "+humancore+"!"+ANSI_RESET+" ");
         }
         waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
     }
@@ -612,14 +612,25 @@ public class Final_Project {
         if(error != ""){
             println(error);
         }
-        int start = 0;
-        try{
-            start = Integer.parseInt(System.console().readLine());
-        }catch(Exception e){
-            level(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
+        String start = "";
+        start = System.console().readLine();
+        int startinput = 0;
+        if(start.endsWith(";")){
+            try{
+                startinput = Integer.parseInt(start.substring(0, start.length()-1));
+            }catch(Exception e){
+                level(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
+            }
+            cheat();
+        }else{
+            try{
+                startinput = Integer.parseInt(start);
+            }catch(Exception e){
+                level(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
+            }
         }
-        if(start != 0){
-            gamelevel = start;
+        if(startinput != 0){
+            gamelevel = startinput;
             startgame("", 0);
         }
     }
@@ -699,9 +710,31 @@ public class Final_Project {
                 printBoard("human");
                 allhumanshipsplaced = true;
             }
-        }else if(allhumanshipsplaced){
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You have placed all of your ships!"+ANSI_RESET+" ");
+        }
+    }
+
+    public void checkshipplacement(){
+        println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You have placed all of your ships!"+ANSI_RESET+" ");
+        printBoardLine(22, 3);
+        println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Do you want to start the game?"+ANSI_RESET+" ");
+        printBoardLine(22, 3);
+        println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
+        println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No (Reset)"+ANSI_RESET+" ");
+        printBoardLine(11, 3);
+        int start = 0;
+        try{
+            start = Integer.parseInt(System.console().readLine());
+        }catch(Exception e){
+            start = 0;
+        }
+        if(start == 1){
             waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+        }else if(start == 2){
+            clear();
+            reset();
+            new Final_Project(false);
+        }else{
+            humansetships(10, ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
         }
     }
 
@@ -898,89 +931,89 @@ public class Final_Project {
         }
         String shipout = "";
         if(arrays[row - 1][col - 1] == 0){
-            shipout = " "; //empty
+            shipout = " ";
         }else if(arrays[row - 1][col - 1] == 1){
             if(hidden == true){
-                shipout = " "; //empty
+                shipout = " ";
             }else{
-                shipout = ANSI_BLACK+ship; //ship
+                shipout = ANSI_BLACK+ship;
             }
         }else if(arrays[row - 1][col - 1] == 2){
-            shipout = hit+""; //hit
+            shipout = hit+"";
         }else if(arrays[row - 1][col - 1] == 3){
-            shipout = sunk+""; //sunk
+            shipout = sunk+"";
         }else if(arrays[row - 1][col - 1] == 4){
-            shipout = miss+""; //miss
+            shipout = miss+"";
         }else if(arrays[row - 1][col - 1] == 5){
             if(hidden == true){
-                shipout = " "; //empty
+                shipout = " ";
             }else{
-                shipout = ANSI_PURPLE+ship; //aircraft carrier
+                shipout = ANSI_PURPLE+ship;
             }
         }else if(arrays[row - 1][col - 1] == 6){
             if(hidden == true){
-                shipout = " "; //empty
+                shipout = " ";
             }else{
-                shipout = ANSI_CYAN+ship; //battleship
+                shipout = ANSI_CYAN+ship;
             }
         }else if(arrays[row - 1][col - 1] == 7){
             if(hidden == true){
-                shipout = " "; //empty
+                shipout = " ";
             }else{
-                shipout = ANSI_YELLOW+ship; //cruiser
+                shipout = ANSI_YELLOW+ship;
             }
         }else if(arrays[row - 1][col - 1] == 8){
             if(hidden == true){
-                shipout = " "; //empty
+                shipout = " ";
             }else{
-                shipout = ANSI_GREEN+ship; //submarine
+                shipout = ANSI_GREEN+ship;
             }
         }else if(arrays[row - 1][col - 1] == 9){
             if(hidden == true){
-                shipout = " "; //empty
+                shipout = " ";
             }else{
-                shipout = ANSI_RED+ship; //destroyer
+                shipout = ANSI_RED+ship;
             }
         }else if(arrays[row - 1][col - 1] == 10){
             if(hidden == true){
-                shipout = hit+""; //hit
+                shipout = hit+"";
             }else{
-                shipout = ANSI_RESET+ANSI_PURPLE+hit+ANSI_BLUE_BACKGROUND; //aircraft carrier hit
+                shipout = ANSI_RESET+ANSI_PURPLE+hit+ANSI_BLUE_BACKGROUND;
             }
         }else if(arrays[row - 1][col - 1] == 11){
             if(hidden == true){
-                shipout = hit+""; //hit
+                shipout = hit+"";
             }else{
-                shipout = ANSI_RESET+ANSI_CYAN+hit+ANSI_BLUE_BACKGROUND; //battleship hit
+                shipout = ANSI_RESET+ANSI_CYAN+hit+ANSI_BLUE_BACKGROUND;
             }
         }else if(arrays[row - 1][col - 1] == 12){
             if(hidden == true){
-                shipout = hit+""; //hit
+                shipout = hit+"";
             }else{
-                shipout = ANSI_RESET+ANSI_YELLOW+hit+ANSI_BLUE_BACKGROUND; //cruiser hit
+                shipout = ANSI_RESET+ANSI_YELLOW+hit+ANSI_BLUE_BACKGROUND;
             }
         }else if(arrays[row - 1][col - 1] == 13){
             if(hidden == true){
-                shipout = hit+""; //hit
+                shipout = hit+"";
             }else{
-                shipout = ANSI_RESET+ANSI_GREEN+hit+ANSI_BLUE_BACKGROUND; //submarine hit
+                shipout = ANSI_RESET+ANSI_GREEN+hit+ANSI_BLUE_BACKGROUND;
             }
         }else if(arrays[row - 1][col - 1] == 14){
             if(hidden == true){
-                shipout = hit+""; //hit
+                shipout = hit+"";
             }else{
-                shipout = ANSI_RESET+ANSI_RED+hit+ANSI_BLUE_BACKGROUND; //destroyer hit
+                shipout = ANSI_RESET+ANSI_RED+hit+ANSI_BLUE_BACKGROUND;
             }
         }else if(arrays[row - 1][col - 1] == 15){
-            shipout = ANSI_RESET+ANSI_PURPLE+sunk+ANSI_BLUE_BACKGROUND; //aircraft carrier sunk
+            shipout = ANSI_RESET+ANSI_PURPLE+sunk+ANSI_BLUE_BACKGROUND;
         }else if(arrays[row - 1][col - 1] == 16){
-            shipout = ANSI_RESET+ANSI_CYAN+sunk+ANSI_BLUE_BACKGROUND; //battleship sunk
+            shipout = ANSI_RESET+ANSI_CYAN+sunk+ANSI_BLUE_BACKGROUND;
         }else if(arrays[row - 1][col - 1] == 17){
-            shipout = ANSI_RESET+ANSI_YELLOW+sunk+ANSI_BLUE_BACKGROUND; //cruiser sunk
+            shipout = ANSI_RESET+ANSI_YELLOW+sunk+ANSI_BLUE_BACKGROUND;
         }else if(arrays[row - 1][col - 1] == 18){
-            shipout = ANSI_RESET+ANSI_GREEN+sunk+ANSI_BLUE_BACKGROUND; //submarine sunk
+            shipout = ANSI_RESET+ANSI_GREEN+sunk+ANSI_BLUE_BACKGROUND;
         }else if(arrays[row - 1][col - 1] == 19){
-            shipout = ANSI_RESET+ANSI_RED+sunk+ANSI_BLUE_BACKGROUND; //destroyer sunk
+            shipout = ANSI_RESET+ANSI_RED+sunk+ANSI_BLUE_BACKGROUND;
         }
         print(shipout+ANSI_BLACK);
     }
@@ -1023,6 +1056,115 @@ public class Final_Project {
             }
         }
          print(ANSI_RESET);
+    }
+
+    private void printcheatBoard(PrintWriter writer) {
+        clear();
+        writer.println("This is the cheat file for Battleship!");
+        printcheatBoardLine(22, 3, writer);
+        writer.println("Key:");
+        printcheatBoardLine(3, 3, writer);
+        writer.println("A = Aircraft Carrier");
+        writer.println("B = Battleship");
+        writer.println("C = Cruiser");
+        writer.println("S = Submarine");
+        writer.println("D = Destroyer");
+        printcheatBoardLine(11, 3, writer);
+        writer.println("Computer's Board:");
+        writer.println("Difficulty: "+gamelevel);
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if(i == 0) {
+                printcheatBoardLine(11, 0, writer);
+            }
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (j == 0) {
+                    writer.print("\u2502 ");
+                }else{
+                    writer.print(" \u2502 ");
+                }
+                printcheatData(i, j, writer);
+                if (j == (BOARD_SIZE - 1)) {
+                    writer.print(" \u2502");
+                }
+            }
+            writer.println("");
+            if(i == (BOARD_SIZE - 1)) {
+                printcheatBoardLine(11, 2, writer);
+            }else if (i < BOARD_SIZE) {
+                printcheatBoardLine(11, 1, writer);
+            }
+        }
+    }
+
+    private void printcheatData(int row, int col, PrintWriter writer){
+        if(row == 0){
+            if(col == 0) {
+                writer.print("  ");
+            }else{
+                writer.print(letters[col - 1]);
+            }
+        }else if (col == 0) {
+            if(row == 0) {
+                writer.print(" ");
+            }else if (row == 10){
+                writer.print(row+"");
+            }else{
+                writer.print(" "+row);
+            }
+        }else{
+            if(cpu[row - 1][col - 1] == 0){
+                writer.print(" ");
+            }else if(cpu[row - 1][col - 1] == 5){
+                writer.print("A");
+            }else if(cpu[row - 1][col - 1] == 6){
+                writer.print("B");
+            }else if(cpu[row - 1][col - 1] == 7){
+                writer.print("C");
+            }else if(cpu[row - 1][col - 1] == 8){
+                writer.print("S");
+            }else if(cpu[row - 1][col - 1] == 9){
+                writer.print("D");
+            }
+        }
+    }
+
+    public void printcheatBoardLine(int n, int type, PrintWriter writer) {
+        for (int i = 0; i < n; i++) {
+            if(type == 0){
+                if(i == 0) {
+                    writer.print("┌──");
+                }
+                if(i == (n - 1)) {
+                    writer.println("──┐");
+                }else{
+                    writer.print("──┬─");
+                }
+            }else if(type == 1){
+                if(i == 0) {
+                    writer.print("├──");
+                }
+                if(i == (n - 1)) {
+                    writer.println("──┤");
+                }else{
+                    writer.print("──┼─");
+                }
+            }else if(type == 2){
+                if(i == 0) {
+                    writer.print("└──");
+                }
+                if(i == (n - 1)) {
+                    writer.println("──┘");
+                }else{
+                    writer.print("──┴─");
+                }
+            }else if(type == 3){
+                if(i == (n - 1)) {
+                    writer.println("──");
+                }else{
+                    writer.print("──");
+                }
+            }
+        }
     }
     public static void main(String[] args) {
         new Final_Project(true);
