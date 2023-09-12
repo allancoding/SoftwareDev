@@ -259,7 +259,9 @@ public class Final_Project {
         println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
         println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
         printBoardLine(11, 3);
-        println(error);
+        if(error != ""){
+            println(error);
+        }
         int start = 0;
         try{
             start = Integer.parseInt(System.console().readLine());
@@ -275,7 +277,7 @@ public class Final_Project {
             println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Bye Bye..."+ANSI_RESET+" ");
             System.exit(0);
         }else{
-            playagain("Invalid input. Try again.");
+            playagain(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
         }
     }
 
