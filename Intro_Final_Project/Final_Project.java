@@ -727,9 +727,7 @@ public class Final_Project {
         }catch(Exception e){
             start = 0;
         }
-        if(start == 1){
-            waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
-        }else if(start == 2){
+        if(start == 2){
             clear();
             reset();
             new Final_Project(false);
@@ -1071,7 +1069,17 @@ public class Final_Project {
         writer.println("D = Destroyer");
         printcheatBoardLine(11, 3, writer);
         writer.println("Computer's Board:");
-        writer.println("Difficulty: "+gamelevel);
+        String difficulty = "";
+        if(gamelevel == 1){
+            difficulty = "Easy";
+        }else if(gamelevel == 2){
+            difficulty = "Medium";
+        }else if(gamelevel == 3){
+            difficulty = "Hard";
+        }else if(gamelevel == 4){
+            difficulty = "Impossible";
+        }
+        writer.println("Difficulty: "+difficulty);
         for (int i = 0; i < BOARD_SIZE; i++) {
             if(i == 0) {
                 printcheatBoardLine(11, 0, writer);
