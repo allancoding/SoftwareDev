@@ -72,6 +72,10 @@ public class Final_Project {
     private boolean gamestart = false;
     private boolean allhumanshipshavebeensunk = false;
     private boolean allcpushipshavebeensunk = false;
+    private double hitsWeight = 0.36;
+    private double missesWeight = -0.05;
+    private double turnsWeight = -0.01;
+    private double shipsSunkWeight = 0.7;
 
     public Final_Project(boolean instructions) {
         if(instructions == true){
@@ -142,108 +146,136 @@ public class Final_Project {
     public void endgame(){
         if(allcpushipshavebeensunk){
             clear();
-            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You win!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"You won!"+ANSI_RESET+" ");
             printBoardLine(22, 3);
             int nmisses = 0;
             int nhits = 0;
             int nhitsleft = 0;
+            int nturns = 0;
+            int[] nships = {0, 0, 0, 0, 0};
+            int cpunhits = 0;
+            int cpunmisses = 0;
             for (int i = 0; i < human.length; i++) {
                 for (int j = 0; j < human[i].length; j++) {
                     if(cpu[i][j] == 4){
                         nmisses++;
+                        nturns++;
                     }else if(cpu[i][j] >= 10){
                         nhits++;
+                        nturns++;
                     }
-                    if(human[i][j] >= 5 && human[i][j] <= 9){
+                    if(human[i][j] == 4){
+                        cpunmisses++;
+                    }else if(human[i][j] >= 5 && human[i][j] <= 9){
                         nhitsleft++;
+                    }else if(human[i][j] >= 10 && human[i][j] <= 14){
+                        cpunhits++;
+                    }else if(human[i][j] >= 15 && human[i][j] <= 19){
+                        nships[(human[i][j] - 15)] = 1;
                     }
                 }
             }
-            int score = (int)(((double)nhits/(double)(nhits+nmisses))*100);
-            println(ANSI_BLACK+"Your score was: "+score+"%"+ANSI_RESET+" ");
-            println(ANSI_BLACK+"You missed "+nmisses+" times, which is a "+((double)nmisses/(double)(nhits+nmisses))*100+"% of missing"+ANSI_RESET+" ");
-            println(ANSI_BLACK+"You hit "+nhits+" times, which is a "+((double)nhits/(double)(nhits+nmisses))*100+"% of hitting"+ANSI_RESET+" ");
-            println(ANSI_BLACK+"The computer had "+nhitsleft+" hits left to win"+ANSI_RESET+" ");
+            int snships = 0;
+            for (int i = 0; i < nships.length; i++) {
+                if(nships[i] == 1){
+                    snships++;
+                }
+            }
+            String hitstr = (nhits == 1) ? "hit" : "hits";
+            String missstr = (nmisses == 1) ? "miss" : "misses";
+            String shipstr = (snships == 1) ? "ship" : "ships";
+            String turnstr = (nturns == 1) ? "turn" : "turns";
+            String cpunhitstr = (cpunhits == 1) ? "hit" : "hits";
+            int cpunturns = (int)((double)nhitsleft/((double)cpunhits/(double)(cpunhits+cpunmisses)));
+            String cputurnstr = (cpunturns == 1) ? "turn" : "turns";
+            double score = (((nhits * hitsWeight) + (nmisses * missesWeight) + (nturns * turnsWeight) + (5 * shipsSunkWeight)) / ((17 * hitsWeight) + (0 * missesWeight) + (17 * turnsWeight) + (5 * shipsSunkWeight)) * 100);
+            double rscore = Math.round(score * 100.0) / 100.0;
+            double accuracy = ((double)nhits/(double)(nhits+nmisses))*100;
+            double raccuracy = Math.round(accuracy * 100.0) / 100.0;
+            println(ANSI_BLACK+"Your score was: "+rscore+"%"+ANSI_RESET+" ");
+            println(ANSI_BLACK+"You had "+nmisses+" "+missstr+" and had "+nhits+" "+hitstr+", which is a accuracy of "+raccuracy+"%"+ANSI_RESET+" ");
+            println(ANSI_BLACK+"You had "+nturns+" "+turnstr+ANSI_RESET+" ");
+            println(ANSI_BLACK+"The computer had "+nhitsleft+" "+cpunhitstr+" left to win, which would have taken about "+cpunturns+" "+cputurnstr+ANSI_RESET+" ");
+            println(ANSI_BLACK+"The computer sunk "+snships+" "+shipstr+ANSI_RESET+" ");
             printBoardLine(22, 3);
             waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
-            clear();
-            println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Do you want to play again?"+ANSI_RESET+" ");
-            printBoardLine(22, 3);
-            println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
-            println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
-            printBoardLine(11, 3);
-            int start = 0;
-            try{
-                start = Integer.parseInt(System.console().readLine());
-            }catch(Exception e){
-                start = 0;
-            }
-            if(start == 1){
-                clear();
-                reset();
-                new Final_Project(false);
-            }else if(start == 2){
-                clear();
-                println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Bye Bye..."+ANSI_RESET+" ");
-                System.exit(0);
-            }else{
-                endgame();
-            }
+            playagain("");
         }else if(allhumanshipshavebeensunk){
             clear();
-            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You lose!"+ANSI_RESET+" ");
+            println(ANSI_BLACK+ANSI_RED_BACKGROUND+"You lost!"+ANSI_RESET+" ");
             printBoardLine(22, 3);
             int nmisses = 0;
             int nhits = 0;
             int nhitsleft = 0;
-            for (int i = 0; i < human.length; i++) {
-                for (int j = 0; j < human[i].length; j++) {
+            int nturns = 0;
+            int[] nships = {0, 0, 0, 0, 0};
+            for (int i = 0; i < cpu.length; i++) {
+                for (int j = 0; j < cpu[i].length; j++) {
                     if(cpu[i][j] == 4){
                         nmisses++;
+                        nturns++;
                     }else if(cpu[i][j] >= 10){
+                        if(cpu[i][j] >= 15 && cpu[i][j] <= 19){
+                            nships[(cpu[i][j] - 15)] = 1;
+                        }
                         nhits++;
-                    }
-                    if(cpu[i][j] >= 5 && cpu[i][j] <= 9){
+                        nturns++;
+                    }else if(cpu[i][j] >= 5 && cpu[i][j] <= 9){
                         nhitsleft++;
                     }
                 }
             }
-            int score = (int)(((double)nhits/(double)(nhits+nmisses))*100);
-            println(ANSI_BLACK+"Your score was: "+score+"%"+ANSI_RESET+" ");
-            println(ANSI_BLACK+"You missed "+nmisses+" times, which is a "+((double)nmisses/(double)(nhits+nmisses))*100+"% of missing"+ANSI_RESET+" ");
-            println(ANSI_BLACK+"You hit "+nhits+" times, which is a "+((double)nhits/(double)(nhits+nmisses))*100+"% of hitting"+ANSI_RESET+" ");
-            println(ANSI_BLACK+"You had "+nhitsleft+" hits left to win"+ANSI_RESET+" ");
+            int snships = 0;
+            for (int i = 0; i < nships.length; i++) {
+                if(nships[i] == 1){
+                    snships++;
+                }
+            }
+            String hitstr = (nhits == 1) ? "hit" : "hits";
+            String missstr = (nmisses == 1) ? "miss" : "misses";
+            String shipstr = (snships == 1) ? "ship" : "ships";
+            String turnstr = (nturns == 1) ? "turn" : "turns";
+            int turnsleft = (int)((double)nhitsleft/((double)nhits/(double)(nhits+nmisses)));
+            String turnsleftstr = (turnsleft == 1) ? "turn" : "turns";
+            double score = (((nhits * hitsWeight) + (nmisses * missesWeight) + (nturns * turnsWeight) + (snships * shipsSunkWeight)) / ((17 * hitsWeight) + (0 * missesWeight) + (17 * turnsWeight) + (5 * shipsSunkWeight)) * 100);
+            double rscore = Math.round(score * 100.0) / 100.0;
+            double accuracy = ((double)nhits/(double)(nhits+nmisses))*100;
+            double raccuracy = Math.round(accuracy * 100.0) / 100.0;
+            println(ANSI_BLACK+"Your score was: "+rscore+"%"+ANSI_RESET+" ");
+            println(ANSI_BLACK+"You had "+nmisses+" "+missstr+" and had "+nhits+" "+hitstr+", which is a accuracy of "+raccuracy+"%"+ANSI_RESET+" ");
+            println(ANSI_BLACK+"You had "+nturns+" "+turnstr+ANSI_RESET+" ");
+            println(ANSI_BLACK+"You had "+nhitsleft+" "+hitstr+" left to win, which would have taken you about "+turnsleft+" "+turnsleftstr+ANSI_RESET+" ");
+            println(ANSI_BLACK+"You sunk "+snships+" "+shipstr+ANSI_RESET+" ");
             printBoardLine(22, 3);
             waitForEnter(ANSI_YELLOW_BACKGROUND+ANSI_BLACK+"Press enter to continue..."+ANSI_RESET+" ");
+            playagain("");
+        }
+    }
+
+    public void playagain(String error){
+        clear();
+        println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Do you want to play again?"+ANSI_RESET+" ");
+        printBoardLine(22, 3);
+        println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
+        println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
+        printBoardLine(11, 3);
+        println(error);
+        int start = 0;
+        try{
+            start = Integer.parseInt(System.console().readLine());
+        }catch(Exception e){
+            start = 0;
+        }
+        if(start == 1){
             clear();
-            println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Do you want to play again?"+ANSI_RESET+" ");
-            printBoardLine(22, 3);
-            println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
-            println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
-            printBoardLine(11, 3);
-            printBoardLine(22, 3);
-            println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Do you want to play again?"+ANSI_RESET+" ");
-            printBoardLine(22, 3);
-            println(ANSI_GREEN_BACKGROUND+ANSI_BLACK+"1. Yes "+ANSI_RESET+" ");
-            println(ANSI_RED_BACKGROUND+ANSI_BLACK+"2. No "+ANSI_RESET+" ");
-            printBoardLine(11, 3);
-            int start = 0;
-            try{
-                start = Integer.parseInt(System.console().readLine());
-            }catch(Exception e){
-                start = 0;
-            }
-            if(start == 1){
-                clear();
-                reset();
-                new Final_Project(false);
-            }else if(start == 2){
-                clear();
-                println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Bye Bye..."+ANSI_RESET+" ");
-                System.exit(0);
-            }else{
-                endgame();
-            }
+            reset();
+            new Final_Project(false);
+        }else if(start == 2){
+            clear();
+            println(ANSI_RED_BACKGROUND+ANSI_BLACK+"Bye Bye..."+ANSI_RESET+" ");
+            System.exit(0);
+        }else{
+            playagain("Invalid input. Try again.");
         }
     }
 
@@ -273,13 +305,13 @@ public class Final_Project {
         printBoardLine(22, 3);
         int hitrate = -1;
         if (gamelevel == 1) {
-            hitrate = (Math.random() < 0.05) ? 1 : 0;
+            hitrate = (Math.random() < 0.10) ? 1 : 0;
         } else if (gamelevel == 2) {
-            hitrate = (Math.random() < 0.17) ? 1 : 0;
+            hitrate = (Math.random() < 0.25) ? 1 : 0;
         } else if (gamelevel == 3) {
-            hitrate = (Math.random() < 0.30) ? 1 : 0;
+            hitrate = (Math.random() < 0.40) ? 1 : 0;
         } else if (gamelevel == 4) {
-            hitrate = (Math.random() < 0.98) ? 1 : 0;
+            hitrate = (Math.random() < 0.95) ? 1 : 0;
         }
         int shipcore = 0;
         int typerow = 0;
@@ -385,7 +417,6 @@ public class Final_Project {
     public void humanhit(String error){
         printBoard("cpu", true);
         println(ANSI_BLACK+ANSI_PURPLE_BACKGROUND+"Where do you want to hit?"+ANSI_RESET+" ");
-        printBoardLine(22, 3);
         println(ANSI_BLACK+ANSI_GREEN_BACKGROUND+"Enter the coordinate you want to hit (ex. A1):"+ANSI_RESET+" ");
         printBoardLine(11, 3);
         if(error != ""){
@@ -621,17 +652,21 @@ public class Final_Project {
             }catch(Exception e){
                 level(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
             }
-            cheat();
+            if(startinput != 0){
+                gamelevel = startinput;
+                cheat();
+                startgame("", 0);
+            }
         }else{
             try{
                 startinput = Integer.parseInt(start);
             }catch(Exception e){
                 level(ANSI_RED_BACKGROUND+ANSI_BLACK+"Invalid input. Try again."+ANSI_RESET+" ");
             }
-        }
-        if(startinput != 0){
-            gamelevel = startinput;
-            startgame("", 0);
+            if(startinput != 0){
+                gamelevel = startinput;
+                startgame("", 0);
+            }
         }
     }
 
