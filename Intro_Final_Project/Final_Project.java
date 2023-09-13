@@ -78,6 +78,7 @@ public class Final_Project {
     private double shipsSunkWeight = 0.7;
 
     public Final_Project(boolean instructions) {
+        System.setProperty("file.encoding", "UTF-8");
         if(instructions == true){
             printInstructions();
         }
