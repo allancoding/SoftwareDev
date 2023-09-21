@@ -1,0 +1,5 @@
+{
+    "key": "ctrl+shift+j",
+    "command": "command-runner.run",
+    "args": { "command": "javaDoc" }
+}
