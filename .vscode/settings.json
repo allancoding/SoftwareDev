@@ -10,6 +10,7 @@
     "command-runner.terminal.autoClear": true,
     "command-runner.terminal.autoFocus": false,
     "command-runner.commands": {
-        "javaDoc": "path=\"${fileDirname}\"; path=$(echo \"$path\" | tr '\\\\' '.'); extracted_path=$(echo \"$path\" | awk -F '.src.' '{print $2}' 2>/dev/null); \"c:/Users/student/.vscode/extensions/keeganbruer.javadoc-generator-2.0.2/dependencies/jdk/bin/javadoc.exe\" -d \"c:/Users/student/Documents/SoftwareDev/doc\" -sourcepath \"c:/Users/student/Documents/SoftwareDev/src\" -subpackages $extracted_path"
+        "javaDoc": "path=\"${fileDirname}\"; path=$(echo \"$path\" | tr '\\\\' '.'); extracted_path=$(echo \"$path\" | awk -F '.src.' '{print $2}' 2>/dev/null); \"c:/Users/student/.vscode/extensions/keeganbruer.javadoc-generator-2.0.2/dependencies/jdk/bin/javadoc.exe\" -d \"c:/Users/student/Documents/SoftwareDev/doc\" -sourcepath \"c:/Users/student/Documents/SoftwareDev/src\" -subpackages $extracted_path",
+        "clear javaDoc": "rm -rf \"c:/Users/student/Documents/SoftwareDev/doc\"/*"
     }        
 }
