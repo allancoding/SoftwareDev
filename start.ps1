@@ -15,7 +15,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     git config --global user.name "Allan Niles"
     git config --global user.email "allancoding.dev@gmail.com"
     Set-Location "C:\Users\student\Documents\SoftwareDev"
-    start code .
+    Start-Process -NoNewWindow -FilePath "C:\Users\student\AppData\Local\Programs\Microsoft VS Code\Code.exe" -ArgumentList "."
     Start-Sleep 3
     Get-CimInstance win32_process -Filter "Name like 'conhost.exe'" | ? { (Get-Process -id $_.ParentProcessId -ea Ignore) -eq $null } | Select-Object ProcessId | ? { Stop-Process $_.ProcessId -Force }
     exit
