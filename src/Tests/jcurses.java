@@ -1,19 +1,15 @@
 package Tests;
 
-import jcurses.*;
-
+import jcurses.widgets.Window;
 
 public class jcurses {
 
-  public static void main(String[] args) {
-    // Create a new curses window
-    Window window = new Window(10, 20, 30, 40);
+    public static void main(String[] args) {
+        // Create a new curses window
+        Window window = new Window(80, 24, true, "Hello World");
 
-    // Write some text to the window
-    window.write("Hello, world!");
-
-    // Refresh the window
-    window.refresh();
-  }
+        // Update the screen
+        window.show();
+    }
 }
 
