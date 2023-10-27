@@ -18,5 +18,22 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     Start-Process -NoNewWindow -FilePath "C:\Users\student\AppData\Local\Programs\Microsoft VS Code\Code.exe" -ArgumentList "."
     Start-Sleep 3
     Get-CimInstance win32_process -Filter "Name like 'conhost.exe'" | ? { (Get-Process -id $_.ParentProcessId -ea Ignore) -eq $null } | Select-Object ProcessId | ? { Stop-Process $_.ProcessId -Force }
+    $setwallpapersrc = @"
+    using System.Runtime.InteropServices;
+    public class Wallpaper
+    {
+    public const int SetDesktopWallpaper = 20;
+    public const int UpdateIniFile = 0x01;
+    public const int SendWinIniChange = 0x02;
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    private static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+    public static void SetWallpaper(string path)
+    {
+        SystemParametersInfo(SetDesktopWallpaper, 0, path, UpdateIniFile | SendWinIniChange);
+    }
+    }
+"@
+    Add-Type -TypeDefinition $setwallpapersrc
+    [Wallpaper]::SetWallpaper("C:\Users\student\Documents\SoftwareDev\wallpaper.jpg")
     exit
 }
