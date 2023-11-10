@@ -1,11 +1,9 @@
 package Tests;
 
 public class test {
-public static void main(String[] args) {
-
-	java.math.BigInteger x = new java.math.BigInteger("3");
-	java.math.BigInteger y = new java.math.BigInteger("7");
-	x.add(y);
-	System.out.println(x);
-}
+	public static void main(String[] args) {
+		String s1 = "Welcome to Java";
+		String s2 = "Welcome to Java";
+		System.out.println("s1 == s2 is " + s1 == s2);
+	}
 }
