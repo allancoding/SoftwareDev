@@ -3,7 +3,6 @@ package Course_4.Module_03;
 public class Inheritance {
     
 }
-
 class Triangle extends GeometricObject{
     private double side1 = 1.0;
     private double side2 = 1.0;
