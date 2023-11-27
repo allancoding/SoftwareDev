@@ -1,5 +1,4 @@
-package Fun;
-import Fun.JavaW;
+package Examples;
 import java.io.IOException;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
@@ -11,23 +10,12 @@ public class tetris {
     public static int[][] gameboard = new int[10][15];
     public static void main(String[] args) throws IOException {
         JavaW.run();
-        //Create a new Terminal object
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
         Terminal terminal = terminalFactory.createTerminal();
-        
-
-        // Create a new Screen object from the Terminal
         Screen screen = new TerminalScreen(terminal);
-
-        // Start the screen
         screen.startScreen();
-        // Create a new Window object
         BasicWindow window = new BasicWindow();
-
-        // Create a new WindowBasedTextGUI object
         MultiWindowTextGUI gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLACK));
-
-        // Add the window to the GUI
         gui.addWindowAndWait(window);
     } 
 

@@ -1,10 +1,10 @@
-package Fun;
+package Examples;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class JavaW {
-    public static void runthew() throws IOException{
+    public static void run() throws IOException{
         String classpath = System.getProperty("java.class.path");
         String[] classpathEntries = classpath.split(System.getProperty("path.separator"));
         String path = "";
@@ -15,7 +15,7 @@ public class JavaW {
         }
         if (System.console() != null) {
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("javaw -cp " + path + " Fun.tetris");
+            Process proc = rt.exec("javaw -cp " + path + " Examples.tetris");
             BufferedReader stdInput = new BufferedReader(new 
                 InputStreamReader(proc.getInputStream()));
             BufferedReader stdError = new BufferedReader(new 
