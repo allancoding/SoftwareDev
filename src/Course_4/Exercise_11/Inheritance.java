@@ -1,4 +1,4 @@
-package Course_4.Module_03;
+package Course_4.Exercise_11;
 import java.util.Scanner;
 
 public class Inheritance {
@@ -23,6 +23,7 @@ public class Inheritance {
         input.close();
     }
 }
+
 class Triangle extends GeometricObject{
     private double side1 = 1.0;
     private double side2 = 1.0;
