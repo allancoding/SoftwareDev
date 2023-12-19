@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class JavaW {
-    public static void run() throws IOException{
+    public static void run(String file) throws IOException{
         String classpath = System.getProperty("java.class.path");
         String[] classpathEntries = classpath.split(System.getProperty("path.separator"));
         String path = "";
@@ -15,7 +15,7 @@ public class JavaW {
         }
         if (System.console() != null) {
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("javaw -cp " + path + " Examples.tetris");
+            Process proc = rt.exec("javaw -cp " + path + " Examples."+file);
             BufferedReader stdInput = new BufferedReader(new 
                 InputStreamReader(proc.getInputStream()));
             BufferedReader stdError = new BufferedReader(new 

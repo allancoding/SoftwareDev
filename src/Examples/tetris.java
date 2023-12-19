@@ -9,7 +9,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class tetris {
     public static int[][] gameboard = new int[10][15];
     public static void main(String[] args) throws IOException {
-        JavaW.run();
+        JavaW.run("tetris");
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
         Terminal terminal = terminalFactory.createTerminal();
         Screen screen = new TerminalScreen(terminal);
