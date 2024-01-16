@@ -6,6 +6,8 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import Projects.JavaW;
+
 public class tetris {
     public static int[][] gameboard = new int[10][15];
     public static void main(String[] args) throws IOException {
