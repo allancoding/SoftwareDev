@@ -6,19 +6,16 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     $elevatedProcess.WaitForExit()
     New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name AppsUseLightTheme -Value 0 -PropertyType DWord -Force
     Get-Process -Name "chrome" | ForEach-Object { $_.CloseMainWindow() } -ErrorAction SilentlyContinue
-    Start-Process "chrome" -ArgumentList "--new-window", "https://stech.instructure.com/login/canvas", "https://discord.com/app", "https://github.com/login"
+    Start-Process "chrome" -ArgumentList "--new-window", "https://stech.instructure.com/login/canvas", "https://discord.com/app", "https://github.com/login", "chrome://settings/security"
+    Start-Process ms-settings:personalization-colors
     Invoke-WebRequest -Uri "https://winget.azureedge.net/cache/source.msix" -OutFile "source.msix"
     Add-AppxPackage -Path ".\source.msix"
     winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements --override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders,addtopath"'
-    winget install -e --id 7zip.7zip
     Set-Location "C:\Users\student\Documents"
     git clone https://github.com/allancoding/SoftwareDev
     git config --global user.name "Allan Niles"
     git config --global user.email "allancoding.dev@gmail.com"
     Set-Location "C:\Users\student\Documents\SoftwareDev"
-    Start-Process -NoNewWindow -FilePath "C:\Users\student\AppData\Local\Programs\Microsoft VS Code\Code.exe" -ArgumentList "."
-    Start-Sleep 3
-    Get-CimInstance win32_process -Filter "Name like 'conhost.exe'" | ? { (Get-Process -id $_.ParentProcessId -ea Ignore) -eq $null } | Select-Object ProcessId | ? { Stop-Process $_.ProcessId -Force }
     $setwallpapersrc = @"
     using System.Runtime.InteropServices;
     public class Wallpaper
@@ -36,5 +33,8 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 "@
     Add-Type -TypeDefinition $setwallpapersrc
     [Wallpaper]::SetWallpaper("C:\Users\student\Documents\SoftwareDev\wallpaper.jpg")
+    $vscode = "/c start """" ""C:\Users\student\AppData\Local\Programs\Microsoft VS Code\Code.exe"" ""."" && exit"
+    Start-Process -FilePath CMD.exe -ArgumentList $vscode
+    winget install -e --id 7zip.7zip
     exit
 }
