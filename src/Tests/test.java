@@ -1,7 +1,9 @@
 package Tests;
 
-public class test {
+class Test {
 	public static void main(String[] args) {
-		System.gc();
-	}
+
+			int[] list = new int[5];
+			System.out.println(list[5]);
+		}
 }
