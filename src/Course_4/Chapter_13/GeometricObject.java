@@ -1,14 +1,14 @@
 package Course_4.Chapter_13;
 
-public class GeometricObject {
+public abstract class GeometricObject {
 	private String color = "White";
 	private boolean filled;
 	private java.util.Date dateCreated;
 	
-	public GeometricObject() {
+	protected GeometricObject() {
 		dateCreated = new java.util.Date();
 	}
-	public GeometricObject(String color, boolean filled) {
+	protected GeometricObject(String color, boolean filled) {
 		dateCreated = new java.util.Date();
 		this.color = color;
 		this.filled = filled;
@@ -31,4 +31,7 @@ public class GeometricObject {
 	public String toString() {
 		return "Created on " + dateCreated + "\ncolor: " + color + " and filled: " + filled;
 	}
+	public abstract double getArea();
+	public abstract double getPerimeter();
+    public abstract void howToColor();
 }
