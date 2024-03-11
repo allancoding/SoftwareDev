@@ -36,6 +36,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     $vscode = "/c start """" ""C:\Users\student\AppData\Local\Programs\Microsoft VS Code\Code.exe"" ""."" && exit"
     Start-Process -FilePath CMD.exe -ArgumentList $vscode
     winget install -e --id 7zip.7zip
+    winget install nodejs
     winget install -e -i --id=9PC6682RJCDD --source=msstore --accept-package-agreements --accept-source-agreements
     exit
 }
