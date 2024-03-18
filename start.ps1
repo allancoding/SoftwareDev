@@ -1,6 +1,7 @@
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     $scriptBlock = {
         winget source reset --force
+        winget settings --enable BypassCertificatePinningForMicrosoftStore
     }
     $elevatedProcess = Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command & { $scriptBlock }" -Verb RunAs -PassThru
     $elevatedProcess.WaitForExit()
