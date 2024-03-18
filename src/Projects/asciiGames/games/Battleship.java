@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import org.fusesource.jansi.AnsiConsole;
 import Projects.asciiGames.ascii;
 
 public class Battleship {
@@ -48,6 +49,7 @@ public class Battleship {
     private char miss = 0x2248;
 
     public static void main(String[] args) {
+        AnsiConsole.systemInstall();
         new Battleship().new Game().start(true);
     }
 
@@ -69,7 +71,7 @@ public class Battleship {
                     cpuhit();
                 }
             }
-            endgame();
+            end();
         }
     
         public void cheat() {
@@ -115,7 +117,7 @@ public class Battleship {
             ascii.waitForEnter(ascii.color.ANSI_YELLOW_BACKGROUND + ascii.color.ANSI_BLACK + "Press enter to continue..." + ascii.color.ANSI_RESET + " ");
         }
     
-        public void endgame() {
+        public void end() {
             if (allcpushipshavebeensunk) {
                 ascii.clear();
                 ascii.println(ascii.color.ANSI_BLACK + ascii.color.ANSI_GREEN_BACKGROUND + "You won!" + ascii.color.ANSI_RESET + " ");
@@ -166,13 +168,13 @@ public class Battleship {
                 double rscore = Math.round(score * 100.0) / 100.0;
                 double accuracy = ((double) nhits / (double) (nhits + nmisses)) * 100;
                 double raccuracy = Math.round(accuracy * 100.0) / 100.0;
-                ascii.println(ascii.color.ANSI_BLACK + "Your score was: " + rscore + "%" + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "You had " + nmisses + " " + missstr + " and had " + nhits + " " + hitstr
+                ascii.println(ascii.color.ANSI_WHITE + "Your score was: " + rscore + "%" + ascii.color.ANSI_RESET + " ");
+                ascii.println(ascii.color.ANSI_WHITE + "You had " + nmisses + " " + missstr + " and had " + nhits + " " + hitstr
                         + ", which is a accuracy of " + raccuracy + "%" + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "You had " + nturns + " " + turnstr + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "The computer had " + nhitsleft + " " + cpunhitstr
+                ascii.println(ascii.color.ANSI_WHITE + "You had " + nturns + " " + turnstr + ascii.color.ANSI_RESET + " ");
+                ascii.println(ascii.color.ANSI_WHITE + "The computer had " + nhitsleft + " " + cpunhitstr
                         + " left to win, which would have taken about " + cpunturns + " " + cputurnstr + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "The computer sunk " + snships + " " + shipstr + ascii.color.ANSI_RESET + " ");
+                ascii.println(ascii.color.ANSI_WHITE + "The computer sunk " + snships + " " + shipstr + ascii.color.ANSI_RESET + " ");
                 printBoardLine(22, 3);
                 ascii.waitForEnter(ascii.color.ANSI_YELLOW_BACKGROUND + ascii.color.ANSI_BLACK + "Press enter to continue..." + ascii.color.ANSI_RESET + " ");
                 playagain("");
@@ -219,14 +221,14 @@ public class Battleship {
                 double rscore = Math.round(score * 100.0) / 100.0;
                 double accuracy = ((double) nhits / (double) (nhits + nmisses)) * 100;
                 double raccuracy = Math.round(accuracy * 100.0) / 100.0;
-                ascii.println(ascii.color.ANSI_BLACK + "Your score was: " + rscore + "%" + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "You had " + nmisses + " " + missstr + " and had " + nhits + " " + hitstr
+                ascii.println(ascii.color.ANSI_WHITE + "Your score was: " + rscore + "%" + ascii.color.ANSI_RESET + " ");
+                ascii.println(ascii.color.ANSI_WHITE + "You had " + nmisses + " " + missstr + " and had " + nhits + " " + hitstr
                         + ", which is a accuracy of " + raccuracy + "%" + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "You had " + nturns + " " + turnstr + ascii.color.ANSI_RESET + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "You had " + nhitsleft + " " + hitstr
+                ascii.println(ascii.color.ANSI_WHITE + "You had " + nturns + " " + turnstr + ascii.color.ANSI_RESET + " ");
+                ascii.println(ascii.color.ANSI_WHITE + "You had " + nhitsleft + " " + hitstr
                         + " left to win, which would have taken you about " + turnsleft + " " + turnsleftstr + ascii.color.ANSI_RESET
                         + " ");
-                ascii.println(ascii.color.ANSI_BLACK + "You sunk " + snships + " " + shipstr + ascii.color.ANSI_RESET + " ");
+                ascii.println(ascii.color.ANSI_WHITE + "You sunk " + snships + " " + shipstr + ascii.color.ANSI_RESET + " ");
                 printBoardLine(22, 3);
                 ascii.waitForEnter(ascii.color.ANSI_YELLOW_BACKGROUND + ascii.color.ANSI_BLACK + "Press enter to continue..." + ascii.color.ANSI_RESET + " ");
                 playagain("");

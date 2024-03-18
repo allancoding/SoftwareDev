@@ -61,8 +61,9 @@ public class ascii {
     public static void waitForEnter(String message, Object... args) {
         Console c = System.console();
         if (c != null) {
-            if (message != null)
+            if (message != null) {
                 c.format(message, args);
+            }
             c.format("\n");
             c.readLine();
         }
