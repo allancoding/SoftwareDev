@@ -3,9 +3,8 @@ package Projects.asciiGames;
 import org.fusesource.jansi.AnsiConsole;
 
 public class manager {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         AnsiConsole.systemInstall();
-        ascii.clear();
-        ascii.println("Hello, World!");
+        animation.main(); 
     }
 }
