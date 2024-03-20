@@ -11,29 +11,9 @@ import Projects.asciiGames.ascii;
 
 public class Battleship {
     private int BOARD_SIZE = 11;
-    private int[] pA = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pB = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pC = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pD = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pE = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pF = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pG = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pH = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pI = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] pJ = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[][] human = { pA, pB, pC, pD, pE, pF, pG, pH, pI, pJ };
+    private int[][] human = new int[10][10];
     private boolean allhumanshipsplaced = false;
-    private int[] cA = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cB = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cC = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cD = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cE = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cF = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cG = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cH = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cI = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] cJ = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    private int[][] cpu = { cA, cB, cC, cD, cE, cF, cG, cH, cI, cJ };
+    private int[][] cpu = new int[10][10];
     private String[] letters = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
     private boolean continuePlacement = true;
     private int gamelevel = 1;
@@ -269,8 +249,8 @@ public class Battleship {
             allhumanshipsplaced = false;
             allhumanshipshavebeensunk = false;
             allcpushipshavebeensunk = false;
-            human = new int[][] { pA, pB, pC, pD, pE, pF, pG, pH, pI, pJ };
-            cpu = new int[][] { cA, cB, cC, cD, cE, cF, cG, cH, cI, cJ };
+            human = new int[10][10];
+            cpu = new int[10][10];
             for (int i = 0; i < human.length; i++) {
                 for (int j = 0; j < human[i].length; j++) {
                     human[i][j] = 0;

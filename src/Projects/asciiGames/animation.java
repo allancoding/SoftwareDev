@@ -1,11 +1,14 @@
 package Projects.asciiGames;
 
+import java.util.Random;
+
 public class animation {
     public static void main() throws InterruptedException {
         Thread.sleep(300);
-        slidein();
-        Thread.sleep(1000);
-        slideout();
+        // slidein();
+        // Thread.sleep(1000);
+        // slideout();
+        comein();
     }
     public static void slidein() throws InterruptedException {
         String[] frames = {
@@ -59,6 +62,32 @@ public class animation {
                 }
                 Thread.sleep(10);
             }
+        }
+    }
+    public static void comein() throws InterruptedException {
+        String text = " █████╗ ███████╗ ██████╗██╗██╗     ██████╗  █████╗ ███╗   ███╗███████╗███████╗██╗\n" +
+                      "██╔══██╗██╔════╝██╔════╝██║██║    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝██╔════╝██║\n" +
+                      "███████║███████╗██║     ██║██║    ██║  ███╗███████║██╔████╔██║█████╗  ███████╗██║\n" +
+                      "██╔══██║╚════██║██║     ██║██║    ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ╚════██║╚═╝\n" +
+                      "██║  ██║███████║╚██████╗██║██║    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗███████║██╗\n" +
+                      "╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝╚═╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝╚═╝";
+        
+        int textLength = text.length();
+        boolean[] textvis = new boolean[textLength];
+
+        for (int i = 0; i < textLength; i++) {
+            StringBuilder animatedText = new StringBuilder();
+            // Randomly select characters to be visible
+            textvis[i] = new Random().nextBoolean();
+            if (textvis[i]) {
+                animatedText.append(text.charAt(i));
+            } else {
+                animatedText.append(" ");
+            }
+            System.out.print("\033[H\033[2J"); // Clear screen
+            System.out.flush();
+            System.out.println(animatedText.toString());
+            Thread.sleep(50); // Adjust the delay to change animation speed
         }
     }
 }
