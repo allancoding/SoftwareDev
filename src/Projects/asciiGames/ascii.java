@@ -58,6 +58,20 @@ public class ascii {
         }
     }
 
+    public static void printRepeated(String character, int times, boolean newline) {
+        for (int i = 0; i < times; i++) {
+            if (newline && i == times - 1) {
+                println(character);
+            } else {
+                print(character);
+            }
+        }
+    }
+
+    public static void wait(int milliseconds) throws InterruptedException{
+        Thread.sleep(milliseconds);
+    }
+
     public static void waitForEnter(String message, Object... args) {
         Console c = System.console();
         if (c != null) {

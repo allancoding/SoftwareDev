@@ -1,15 +1,6 @@
 package Projects.asciiGames;
 
-import java.util.Random;
-
 public class animation {
-    public static void main() throws InterruptedException {
-        Thread.sleep(300);
-        // slidein();
-        // Thread.sleep(1000);
-        // slideout();
-        comein();
-    }
     public static void slidein() throws InterruptedException {
         String[] frames = {
             "_______             __________    _________                             ______",
@@ -23,17 +14,17 @@ public class animation {
         System.out.flush();
         for (int i = 0; i <= frameWidth; i++) {
             if (i != frameWidth) {
-                System.out.print("\033[H\033[2J");
+                ascii.clear();
                 System.out.flush();
             }
             for (String line : frames) {
-                System.out.print("\033[" + i + "D");
+                ascii.print("\033[" + i + "D");
                 if (frameWidth - i > 0) {
-                    System.out.print(line.substring(frameWidth - i));
+                    ascii.print(line.substring(frameWidth - i));
                 }
-                System.out.println();
+                ascii.println("");
             }
-            Thread.sleep(10);
+            ascii.wait(10);
         }
     }
     public static void slideout() throws InterruptedException {
@@ -49,45 +40,33 @@ public class animation {
         System.out.flush();
         for (int lineIndex = 0; lineIndex < frameHeight; lineIndex++) {
             for (int i = frameWidth; i >= 0; i--) {
-                System.out.print("\033[H\033[2J");
+                ascii.clear();
                 System.out.flush();
-                System.out.print("\033[" + (lineIndex + 1) + ";1H");
+                ascii.print("\033[" + (lineIndex + 1) + ";1H");
                 if (frameWidth - i > 0 && frameHeight - lineIndex > 0) {
-                    System.out.print(frames[lineIndex].substring(frameWidth - i));
+                    ascii.print(frames[lineIndex].substring(frameWidth - i));
                 }
-                System.out.println();
+                ascii.println("");
                 for (int j = lineIndex + 1; j < frameHeight; j++) {
-                    System.out.print(frames[j]);
-                    System.out.println();
+                    ascii.print(frames[j]);
+                    ascii.println("");
                 }
-                Thread.sleep(10);
+                ascii.wait(10);
             }
         }
     }
-    public static void comein() throws InterruptedException {
-        String text = " █████╗ ███████╗ ██████╗██╗██╗     ██████╗  █████╗ ███╗   ███╗███████╗███████╗██╗\n" +
-                      "██╔══██╗██╔════╝██╔════╝██║██║    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝██╔════╝██║\n" +
-                      "███████║███████╗██║     ██║██║    ██║  ███╗███████║██╔████╔██║█████╗  ███████╗██║\n" +
-                      "██╔══██║╚════██║██║     ██║██║    ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ╚════██║╚═╝\n" +
-                      "██║  ██║███████║╚██████╗██║██║    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗███████║██╗\n" +
-                      "╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝╚═╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝╚═╝";
-        
-        int textLength = text.length();
-        boolean[] textvis = new boolean[textLength];
-
-        for (int i = 0; i < textLength; i++) {
-            StringBuilder animatedText = new StringBuilder();
-            // Randomly select characters to be visible
-            textvis[i] = new Random().nextBoolean();
-            if (textvis[i]) {
-                animatedText.append(text.charAt(i));
-            } else {
-                animatedText.append(" ");
-            }
-            System.out.print("\033[H\033[2J"); // Clear screen
-            System.out.flush();
-            System.out.println(animatedText.toString());
-            Thread.sleep(50); // Adjust the delay to change animation speed
+    public static void show() throws InterruptedException {
+        String[] frames = {
+            "     ___                              ______                                 __",
+            "    /   |  _____ _____  (_)  (_)     / ____/ ____ _  ____ ___  ___   _____  / /",
+            "   / /| | /  __// ___/ / /  / /     / / __  / __ `/ / __ `__ \\/ _ \\ / ___/ / / ",
+            "  / ___ |(__  )/ /__  / /  / /     / /_/ / / /_/ / / / / / / /  __/(__  ) /_/  ",
+            " /_/  |_/____/ \\___/ /_/  /_/      \\____/  \\__,_/ /_/ /_/ /_/\\___//____/ (_)   "
+        };
+        ascii.clear();
+        System.out.flush();
+        for (String line : frames) {
+            System.out.println(line);
         }
     }
 }
