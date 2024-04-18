@@ -34,8 +34,8 @@ public class Battleship {
     }
 
     public class Game {
-        public String Name = "Battleship";
-        public String Description = "The classic game of Battleship.";
+        public static final String Name = "Battleship";
+        public static final String Description = "The classic game of Battleship.";
 
         public void start(boolean instructions) {
             System.setProperty("file.encoding", "UTF-8");
