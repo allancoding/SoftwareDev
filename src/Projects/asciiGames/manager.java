@@ -18,6 +18,7 @@ public class manager {
         //start();
         File folder = new File(manager.class.getResource("games/").getPath());
         File[] listOfFiles = folder.listFiles();
+        ArrayList<Object> game = new ArrayList<>();
         if (listOfFiles != null && listOfFiles.length > 0) {
             ArrayList<String> gameClasses = new ArrayList<String>();
             for (File file : listOfFiles) {
@@ -29,7 +30,6 @@ public class manager {
             }
             for (String gameClassName : gameClasses) {
                 Class<?> gameClass = Class.forName("Projects.asciiGames.games." + gameClassName);
-                ArrayList<Object> game = new ArrayList<>();
                 Field[] fields = gameClass.getFields();
                 for (Field field : fields) {
                     if (field.getType().equals(String.class)) {
@@ -38,8 +38,20 @@ public class manager {
                         game.add(Arrays.asList(fieldName, fieldValue));
                     }
                 }
+                try {
+                    // Get the "start" method from GameClass
+                    Method method = gameClass.getClass().getDeclaredMethod("start", boolean.class);
+
+                    // Invoke the "start" method on the gameClass instance with true for instructions
+                    method.invoke(gameClass, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+        //System.out.println(game);
+        //exicuteMethod
+        
         //ascii.wait(10000);
     }
     public static void start() throws InterruptedException{
