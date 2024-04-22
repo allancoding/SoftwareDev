@@ -38,16 +38,17 @@ public class manager {
                         game.add(Arrays.asList(fieldName, fieldValue));
                     }
                 }
-                try {
-                    // Get the "start" method from GameClass
-                    Method method = gameClass.getClass().getDeclaredMethod("start", boolean.class);
-
-                    // Invoke the "start" method on the gameClass instance with true for instructions
-                    method.invoke(gameClass, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
+        }
+        try {
+            Class<?> gameClass = Class.forName("Projects.asciiGames.games.Battleship$Game");
+            Method method = gameClass.getDeclaredMethod("start", boolean.class);
+
+            Object instance = gameClass.getDeclaredConstructor().newInstance();
+
+            method.invoke(instance, true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //System.out.println(game);
         //exicuteMethod
