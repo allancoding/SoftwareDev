@@ -82,5 +82,9 @@ public class ascii {
             c.readLine();
         }
     }
+
+    public static String toS(char string) {
+        return string + "";
+    }
 }
     

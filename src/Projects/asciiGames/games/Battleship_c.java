@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import org.fusesource.jansi.AnsiConsole;
 import Projects.asciiGames.ascii;
 
-public class Battleship {
+public class Battleship_c {
     private static int BOARD_SIZE = 11;
     private static int[][] human = new int[10][10];
     private static boolean allhumanshipsplaced = false;

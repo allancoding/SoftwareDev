@@ -1,6 +1,8 @@
 package Projects.asciiGames;
 
 public class animation {
+    private static String[] colors = {ascii.color.ANSI_RED, ascii.color.ANSI_YELLOW, ascii.color.ANSI_GREEN, ascii.color.ANSI_CYAN, ascii.color.ANSI_BLUE, ascii.color.ANSI_PURPLE};
+
     public static void slidein() throws InterruptedException {
         String[] frames = {
             "_______             __________    _________                             ______",
@@ -20,7 +22,7 @@ public class animation {
             for (String line : frames) {
                 ascii.print("\033[" + i + "D");
                 if (frameWidth - i > 0) {
-                    ascii.print(line.substring(frameWidth - i));
+                    ascii.print(colors[i/14] + line.substring(frameWidth - i) + ascii.color.ANSI_RESET);
                 }
                 ascii.println("");
             }
@@ -44,7 +46,7 @@ public class animation {
                 System.out.flush();
                 ascii.print("\033[" + (lineIndex + 1) + ";1H");
                 if (frameWidth - i > 0 && frameHeight - lineIndex > 0) {
-                    ascii.print(frames[lineIndex].substring(frameWidth - i));
+                    ascii.print(colors[i/14] + frames[lineIndex].substring(frameWidth - i) + ascii.color.ANSI_RESET);
                 }
                 ascii.println("");
                 for (int j = lineIndex + 1; j < frameHeight; j++) {
@@ -65,8 +67,10 @@ public class animation {
         };
         ascii.clear();
         System.out.flush();
+        int i = 0;
         for (String line : frames) {
-            System.out.println(line);
+            ascii.println(colors[i] + line + ascii.color.ANSI_RESET);
+            i++;
         }
     }
 }
