@@ -7,9 +7,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 public class manager {
     private static final String packagePath = "Projects.asciiGames";
-    private static boolean gameRunning = true;
+    private static boolean gameRunning = false;
     private static ArrayList<Object[]> gameS = new ArrayList<>();
     private static Thread shutdownHook;
+    private static boolean managerRunning = true;
     public static void main(String[] args) throws Exception{
         AnsiConsole.systemInstall();
         if (AnsiConsole.getTerminalWidth() < 80) {
@@ -17,8 +18,8 @@ public class manager {
             System.exit(1);
         }
         ascii.wait(300);
-        setup();
         ctrC();
+        setup();
         start();
     }
 
@@ -66,64 +67,39 @@ public class manager {
             i++;
         }
         ascii.printRepeated(ascii.color.ANSI_PURPLE +"-" + ascii.color.ANSI_RESET, 20, true);
-        System.console().readLine();
-        // Class<?> clazz = Class.forName("Projects.asciiGames.games.Battleship$Game");
-            
-        // // Get the static method "start" with a boolean parameter
-        // Method method = clazz.getMethod("start", boolean.class);
-    
-        // // Set the value of the boolean parameter (true/false based on your needs)
-        // boolean instructions = true;
-    
-        // Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        //     ascii.clear();
-        // }));
-        // // Invoke the static method (pass null as instance since it's static)
-        // method.invoke(null, instructions);
-    
-        // System.out.println("Method " + method.getName() + " executed successfully.");Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        //     if (gameRunning) {
-        //         ascii.clear();
-        //         restart(args);   
-        //     } else {
-        //         ascii.clear();
-        //         ascii.println("Goodbye!");
-        //         ascii.println("Thank you for playing ASCII Games!");
-        //         ascii.end(0);
-        //     }
-        // }));
-        
-        // Class<?> clazz = Class.forName("Projects.asciiGames.games.Battleship$Game");
-            
-        // // Get the static method "start" with a boolean parameter
-        // Method method = clazz.getMethod("start", boolean.class);
-    
-        // // Set the value of the boolean parameter (true/false based on your needs)
-        // boolean instructions = true;
-    
-        // Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        //     ascii.clear();
-        // }));
-        // // Invoke the static method (pass null as instance since it's static)
-        // method.invoke(null, instructions);
-    
-        // System.out.println("Method " + method.getName() + " executed successfully.");
+        int start = -1;
+        while (start < 1 || start > gameS.size()) {
+            try {
+                System.out.print("Enter a number between 1 and " + gameS.size() + ": ");
+                start = Integer.parseInt(System.console().readLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+        System.out.println(array[start - 1][0]+"");
+        Class<?> clazz = Class.forName(array[start - 1][0]+"");
+        Method method = clazz.getMethod("start", boolean.class);
+        method.invoke(null, true);
+        ascii.waitForEnter("ok?");
     }
     public static void ctrC() {
         shutdownHook = new Thread(() -> {
-            if (gameRunning) {
-                ascii.clear();
-                //gameRunning = false;
-                try {
-                    start();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            while (managerRunning) {
+                if (gameRunning) {
+                    gameRunning = false;
+                    ascii.clear();
+                    try {
+                        start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    managerRunning = false;
+                    ascii.clear();
+                    ascii.println(ascii.color.ANSI_RED + "Goodbye!");
+                    ascii.println(ascii.color.ANSI_GREEN + "Thank you for playing ASCII Games!" + ascii.color.ANSI_RESET);
+                    Thread.currentThread().interrupt();
                 }
-            } else {
-                ascii.clear();
-                ascii.println(ascii.color.ANSI_RED + "Goodbye!");
-                ascii.println(ascii.color.ANSI_GREEN +"Thank you for playing ASCII Games!" + ascii.color.ANSI_RESET);
-                Thread.currentThread().interrupt();
             }
         });
         Runtime.getRuntime().addShutdownHook(shutdownHook);
