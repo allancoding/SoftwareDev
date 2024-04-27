@@ -1,4 +1,4 @@
-package Projects;
+package Tests;
 
 import java.io.IOException;
 import javax.swing.*;

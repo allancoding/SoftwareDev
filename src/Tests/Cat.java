@@ -1,4 +1,4 @@
-package Projects;
+package Tests;
 
 import java.io.IOException;
 import javax.swing.*;
@@ -37,6 +37,7 @@ public class Cat extends JFrame{
             @Override
             protected ImageIcon doInBackground() throws Exception {
                 try {
+                    @SuppressWarnings("deprecation")
                     URL url = new URL(imageUrl);
                     return new ImageIcon(ImageIO.read(url));
                 } catch (IOException e) {

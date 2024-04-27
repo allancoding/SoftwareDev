@@ -5,13 +5,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 public class manager {
+    public static boolean gameRunning = false;
     private static final String packagePath = "Projects.asciiGames";
-    private static boolean gameRunning = false;
     private static ArrayList<Object[]> gameS = new ArrayList<>();
     private static Thread shutdownHook;
     private static boolean managerRunning = true;
-    public static void main(String[] args) throws Exception{
+    private static Integer gameExit = 0;
+    public static void main(String[] args) throws Exception {
         AnsiConsole.systemInstall();
         if (AnsiConsole.getTerminalWidth() < 80) {
             ascii.println("Terminal width must be at least 80 characters wide.");
@@ -20,7 +22,7 @@ public class manager {
         ascii.wait(300);
         ctrC();
         setup();
-        start();
+        start(false, "");
     }
 
     public static void setup() throws Exception {
@@ -51,8 +53,10 @@ public class manager {
         }
     }
 
-    public static void start() throws Exception{
-        animation.slidein();
+    public static void start(boolean animate, String error) throws Exception {
+        if (animate) {
+            animation.slidein();
+        }
         animation.show();
         ascii.printRepeated(ascii.color.ANSI_PURPLE + "-" + ascii.color.ANSI_RESET, 80, true);
         ascii.println(ascii.color.ANSI_RED + "Welcome to ASCII Games!" + ascii.color.ANSI_RESET);
@@ -67,36 +71,46 @@ public class manager {
             i++;
         }
         ascii.printRepeated(ascii.color.ANSI_PURPLE +"-" + ascii.color.ANSI_RESET, 20, true);
-        int start = -1;
-        while (start < 1 || start > gameS.size()) {
-            try {
-                System.out.print("Enter a number between 1 and " + gameS.size() + ": ");
-                start = Integer.parseInt(System.console().readLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
-            }
+        if (error != "") {
+            ascii.println(ascii.color.ANSI_RED + error + ascii.color.ANSI_RESET);
         }
-        System.out.println(array[start - 1][0]+"");
-        Class<?> clazz = Class.forName(array[start - 1][0]+"");
+        int start = 0;
+        try {
+            System.out.print("Enter a Game: ");
+            start = Integer.parseInt(System.console().readLine());
+        } catch (Exception e) {
+            start = 0;
+            return;
+        }
+        if (start < 1 || start > gameS.size()) {
+            start(false, "Not a valid game.");
+            return;
+        }
+        gameRunning = true;
+        Class<?> clazz = Class.forName(packagePath + ".games." + array[start - 1][0]+"");
         Method method = clazz.getMethod("start", boolean.class);
-        method.invoke(null, true);
-        ascii.waitForEnter("ok?");
+        try {
+            method.invoke(null, true);
+            return;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
+
     public static void ctrC() {
         shutdownHook = new Thread(() -> {
             while (managerRunning) {
                 if (gameRunning) {
                     gameRunning = false;
-                    ascii.clear();
                     try {
-                        start();
+                        start(false, "Game has been interrupted. " + gameExit);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     managerRunning = false;
                     ascii.clear();
-                    ascii.println(ascii.color.ANSI_RED + "Goodbye!");
+                    ascii.println(ascii.color.ANSI_RED + "Goodbye!" + gameRunning);
                     ascii.println(ascii.color.ANSI_GREEN + "Thank you for playing ASCII Games!" + ascii.color.ANSI_RESET);
                     Thread.currentThread().interrupt();
                 }

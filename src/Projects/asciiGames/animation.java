@@ -26,7 +26,7 @@ public class animation {
                 }
                 ascii.println("");
             }
-            ascii.wait(10);
+            ascii.wait(20);
         }
     }
     public static void slideout() throws InterruptedException {
@@ -53,7 +53,7 @@ public class animation {
                     ascii.print(frames[j]);
                     ascii.println("");
                 }
-                ascii.wait(10);
+                ascii.wait(20);
             }
         }
     }

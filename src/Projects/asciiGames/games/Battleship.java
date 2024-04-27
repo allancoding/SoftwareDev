@@ -29,7 +29,6 @@ public class Battleship {
     private static char miss = 0x2248;
 
     public static void main(String[] args) {
-        AnsiConsole.systemInstall();
         Game.start(true);
     }
 
@@ -38,6 +37,7 @@ public class Battleship {
         public static final String Description = "The classic game of Battleship.";
 
         public static void start(boolean instructions) {
+            AnsiConsole.systemInstall();
             System.setProperty("file.encoding", "UTF-8");
             if (instructions == true) {
                 printInstructions();

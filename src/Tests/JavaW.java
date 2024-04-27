@@ -1,4 +1,4 @@
-package Projects;
+package Tests;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,12 +14,10 @@ public class JavaW {
             }
         }
         if (System.console() != null) {
-            Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("javaw -cp " + path + " "+file);
-            BufferedReader stdInput = new BufferedReader(new 
-                InputStreamReader(proc.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new 
-                InputStreamReader(proc.getErrorStream()));
+            ProcessBuilder processBuilder = new ProcessBuilder("javaw", "-cp", path, file);
+            Process proc = processBuilder.start();
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
             while (proc.isAlive()) {
                 String s = stdInput.readLine();
                 String ss = stdError.readLine();
