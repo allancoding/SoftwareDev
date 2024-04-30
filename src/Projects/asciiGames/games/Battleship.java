@@ -29,16 +29,31 @@ public class Battleship {
     private static char miss = 0x2248;
 
     public static void main(String[] args) {
-        Game.start(true);
+        AnsiConsole.systemInstall();
+        Game.start(true, true);
     }
 
     public static class Game {
         public static final String Name = "Battleship";
         public static final String Description = "The classic game of Battleship.";
+        public static boolean shutdownHookAdded = false;
 
-        public static void start(boolean instructions) {
-            AnsiConsole.systemInstall();
+        public static void start(boolean instructions, boolean main) {
             System.setProperty("file.encoding", "UTF-8");
+            if (!shutdownHookAdded && main) {
+                Runtime.getRuntime().addShutdownHook(new Thread() {
+                    public void run() {
+                        try {
+                            Thread.sleep(200);
+                            System.out.println("Exiting Battleship...");
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                shutdownHookAdded = true;
+            }
             if (instructions == true) {
                 printInstructions();
             }
@@ -237,7 +252,7 @@ public class Battleship {
             if (start == 1) {
                 ascii.clear();
                 reset();
-                start(false);
+                start(false, true);
             } else if (start == 2) {
                 ascii.clear();
                 ascii.println(ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Bye Bye..." + ascii.color.ANSI_RESET + " ");
@@ -740,7 +755,7 @@ public class Battleship {
             if (start == 2) {
                 ascii.clear();
                 reset();
-                start(false);
+                start(false, true);
             } else {
                 humansetships(10, ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Invalid input. Try again." + ascii.color.ANSI_RESET + " ");
             }
