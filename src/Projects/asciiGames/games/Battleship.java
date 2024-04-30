@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import org.fusesource.jansi.AnsiConsole;
 import Projects.asciiGames.ascii;
@@ -40,15 +41,32 @@ public class Battleship {
 
         public static void start(boolean instructions, boolean main) {
             System.setProperty("file.encoding", "UTF-8");
-            if (!shutdownHookAdded && main) {
+            if (!shutdownHookAdded) {
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     public void run() {
-                        try {
-                            Thread.sleep(200);
-                            System.out.println("Exiting Battleship...");
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                            e.printStackTrace();
+                        if (main) {
+                            try {
+                                Thread.sleep(200);
+                                System.out.println("Exiting Battleship...");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    try {
+                                        Class<?> clazz = Class.forName("Projects.asciiGames.manager");
+                                        Method method = clazz.getMethod("start", boolean.class, String.class);
+                                        method.invoke(null, false, "");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                            }}).start();
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
@@ -652,27 +670,31 @@ public class Battleship {
             String start = "";
             start = System.console().readLine();
             int startinput = 0;
-            if (start.endsWith(";")) {
-                try {
-                    startinput = Integer.parseInt(start.substring(0, start.length() - 1));
-                } catch (Exception e) {
-                    level(ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Invalid input. Try again." + ascii.color.ANSI_RESET + " ");
+            try {
+                if (start.endsWith(";")) {
+                    try {
+                        startinput = Integer.parseInt(start.substring(0, start.length() - 1));
+                    } catch (Exception e) {
+                        level(ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Invalid input. Try again." + ascii.color.ANSI_RESET + " ");
+                    }
+                    if (startinput != 0) {
+                        gamelevel = startinput;
+                        cheat();
+                        startgame("", 0);
+                    }
+                } else {
+                    try {
+                        startinput = Integer.parseInt(start);
+                    } catch (Exception e) {
+                        level(ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Invalid input. Try again." + ascii.color.ANSI_RESET + " ");
+                    }
+                    if (startinput != 0) {
+                        gamelevel = startinput;
+                        startgame("", 0);
+                    }
                 }
-                if (startinput != 0) {
-                    gamelevel = startinput;
-                    cheat();
-                    startgame("", 0);
-                }
-            } else {
-                try {
-                    startinput = Integer.parseInt(start);
-                } catch (Exception e) {
-                    level(ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Invalid input. Try again." + ascii.color.ANSI_RESET + " ");
-                }
-                if (startinput != 0) {
-                    gamelevel = startinput;
-                    startgame("", 0);
-                }
+            } catch (Exception e) {
+                level(ascii.color.ANSI_RED_BACKGROUND + ascii.color.ANSI_BLACK + "Invalid input. Try again." + ascii.color.ANSI_RESET + " ");
             }
         }
     

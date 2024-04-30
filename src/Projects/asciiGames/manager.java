@@ -11,8 +11,6 @@ public class manager {
     private static final String packagePath = "Projects.asciiGames";
     private static ArrayList<Object[]> gameS = new ArrayList<>();
     private static Thread shutdownHook;
-    private static Thread game;
-    private static boolean managerRunning = true;
     public static void main(String[] args) throws Exception {
         AnsiConsole.systemInstall();
         if (AnsiConsole.getTerminalWidth() < 80) {
@@ -20,7 +18,7 @@ public class manager {
             System.exit(1);
         }
         ascii.wait(300);
-        //ctrC();
+        ctrC();
         setup();
         start(false, "");
     }
@@ -53,13 +51,8 @@ public class manager {
         }
     }
 
-    public static void start(boolean animate, String error, boolean... kill) throws Exception {
-        if ((kill.length >= 1) ? kill[0] : false) {
-            gameRunning = false;
-            return;
-        }
+    public static void start(boolean animate, String error) throws Exception {
         if (animate) {
-            
             animation.slidein();
         }
         animation.show();
@@ -91,42 +84,21 @@ public class manager {
             start(false, "Not a valid game.");
             return;
         }
-        gameRunning = true;
-        final Object[][] GameArray = array;
-        final int GameStart = start;
-        game = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Class<?> clazz = Class.forName(packagePath + ".games." + GameArray[GameStart - 1][0]+"");
-                    Method method = clazz.getMethod("start", boolean.class, boolean.class);
-                    method.invoke(null, true, false);
-                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });  
-        game.start();
-        Thread.sleep(10000);
-        game.interrupt();
-        gameRunning = false;
+        Runtime.getRuntime().removeShutdownHook(shutdownHook);
+        try {
+            Class<?> clazz = Class.forName(packagePath + ".games." + array[start - 1][0]+"");
+            Method method = clazz.getMethod("start", boolean.class, boolean.class);
+            method.invoke(null, true, false);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } 
     }
 
     public static void ctrC() {
         shutdownHook = new Thread(() -> {
-            while (managerRunning) {
-                if (gameRunning) {
-                    gameRunning = false;
-                    ascii.clear();
-                    game.interrupt();
-                } else {
-                    managerRunning = false;
-                    ascii.clear();
-                    ascii.println(ascii.color.ANSI_RED + "Goodbye!");
-                    ascii.println(ascii.color.ANSI_GREEN + "Thank you for playing ASCII Games!" + ascii.color.ANSI_RESET);
-                    Thread.currentThread().interrupt();
-                }
-            }
+            ascii.clear();
+            ascii.println(ascii.color.ANSI_RED + "Goodbye!");
+            ascii.println(ascii.color.ANSI_GREEN + "Thank you for playing ASCII Games!" + ascii.color.ANSI_RESET);
         });
         Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
