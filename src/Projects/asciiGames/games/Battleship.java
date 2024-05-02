@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import org.fusesource.jansi.AnsiConsole;
 import Projects.asciiGames.ascii;
@@ -41,32 +40,14 @@ public class Battleship {
 
         public static void start(boolean instructions, boolean main) {
             System.setProperty("file.encoding", "UTF-8");
-            if (!shutdownHookAdded) {
+            if (!shutdownHookAdded && main) {
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     public void run() {
-                        if (main) {
-                            try {
-                                Thread.sleep(200);
-                                System.out.println("Exiting Battleship...");
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            new Thread(new Runnable() {
-                                public void run() {
-                                    try {
-                                        Class<?> clazz = Class.forName("Projects.asciiGames.manager");
-                                        Method method = clazz.getMethod("start", boolean.class, String.class);
-                                        method.invoke(null, false, "");
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                            }}).start();
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            Thread.sleep(200);
+                            System.out.println("Exiting Battleship...");
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
                 });

@@ -3,6 +3,8 @@ package Tests;
 import java.io.IOException;
 import javax.swing.*;
 import javax.imageio.ImageIO;
+
+import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 import java.io.File;
@@ -37,7 +39,8 @@ public class Cat extends JFrame{
             @Override
             protected ImageIcon doInBackground() throws Exception {
                 try {
-                    URL url = new URL(imageUrl);
+                    URI uri = new URI(imageUrl);
+                    URL url = uri.toURL();
                     return new ImageIcon(ImageIO.read(url));
                 } catch (IOException e) {
                     // If there is an error loading the image, return the default image
