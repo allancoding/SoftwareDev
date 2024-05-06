@@ -45,7 +45,7 @@ public class Battleship {
                     public void run() {
                         try {
                             Thread.sleep(200);
-                            System.out.println("Exiting Battleship...");
+                            ascii.println("Exiting Battleship...");
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -69,6 +69,7 @@ public class Battleship {
                 }
             }
             end();
+            ascii.waitForEnter("Press enter to continue to the main menu...");
         }
     
         public static void cheat() {

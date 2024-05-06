@@ -20,7 +20,7 @@ public class manager {
         ascii.wait(300);
         ctrC();
         setup();
-        start(false, "");
+        start(true, "");
     }
 
     public static void setup() throws Exception {
@@ -84,14 +84,15 @@ public class manager {
             start(false, "Not a valid game.");
             return;
         }
-        Runtime.getRuntime().removeShutdownHook(shutdownHook);
         try {
             Class<?> clazz = Class.forName(packagePath + ".games." + array[start - 1][0]+"");
             Method method = clazz.getMethod("start", boolean.class, boolean.class);
+            ascii.clear();
             method.invoke(null, true, false);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
             e.printStackTrace();
-        } 
+        }
+        start(false, "");
     }
 
     public static void ctrC() {
