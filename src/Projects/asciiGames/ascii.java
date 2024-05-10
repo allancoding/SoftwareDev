@@ -27,7 +27,7 @@ public class ascii {
         public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     }
 
-    public static class table{
+    public static class table {
         public static final char topCornerLeft = 0x250C;
         public static final char topCornerRight = 0x2510;
         public static final char bottomCornerLeft = 0x2514;
@@ -38,6 +38,8 @@ public class ascii {
         public static final char leftT = 0x251C;
         public static final char rightT = 0x2524;
         public static final char cross = 0x253C;
+        public static final char horizontal = 0x2500;
+        public static final char vertical = 0x2502;
     }
 
     public static void clear() {
