@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Build the project
 echo "Building asciiGames"
 # create the .tmp directory
@@ -8,17 +7,17 @@ mkdir -p .tmp/games
 cp -r *.java .tmp
 cp -r games/*.java .tmp/games
 # fix the package name
-sed -i 's/package asciiGames;/package Projects.asciiGames;/' .tmp/*.java
-sed -i 's/package asciiGames;/package Projects.asciiGames;/' .tmp/games/*.java
-# fix imports
-sed -i 's/import asciiGames\./import Projects.asciiGames\./' .tmp/*.java
-sed -i 's/import asciiGames\./import Projects.asciiGames\./' .tmp/games/*.java
+sed -i 's/Projects.asciiGames/asciiGames/' .tmp/*.java
+sed -i 's/Projects.asciiGames/asciiGames/' .tmp/games/*.java
 # get all of the files
-find .tmp -name "*.java" > .tmp/sources.txt
+cd .tmp
+find ./ -name "*.java" > sources.txt
 # compile the source files
-javac -d build .tmp/@sources.txt
+javac -cp ../lib/* -d ../build @sources.txt
+cd ..
+unzip -q -o lib/*.jar -d build
 # add the jar dependencies to the classpath
-jar cvfm asciiGames.jar build/META-INF/MANIFEST.MF -C build . -C lib .
+jar cmf build/manifest.txt asciiGames.jar -C build .
 # remove the .tmp directory
 rm -r .tmp
-read
+echo "Done!"

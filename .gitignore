@@ -4,3 +4,6 @@ Intro_Final_Project/Final_Project.class
 .idea/
 out/
 .metadata/
+**/.tmp/
+src/Projects/**/build/**/*
+!src/Projects/**/build/manifest.txt
