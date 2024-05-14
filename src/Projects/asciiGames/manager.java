@@ -1,9 +1,12 @@
 package Projects.asciiGames;
 
 import org.fusesource.jansi.AnsiConsole;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.jar.JarFile;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 public class manager {
@@ -24,19 +27,21 @@ public class manager {
     }
 
     public static void setup() throws Exception {
-        File folder = new File(manager.class.getResource("games/").getPath());
-        File[] listOfFiles = folder.listFiles();
-        if (listOfFiles != null && listOfFiles.length > 0) {
+        URL gamespath = manager.class.getResource("games/");
+        if (gamespath.toString().startsWith("jar:") || gamespath.toString().startsWith("rsrc:")) {
+            System.out.println("Jar file detected.");
+            String jarPath = manager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            JarFile jarFile = new JarFile(jarPath);
             ArrayList<String> gameClasses = new ArrayList<String>();
-            for (File file : listOfFiles) {
-                if (file.isFile() && file.getName().endsWith(".class")) {
-                    if (file.getName().replace(".class", "").endsWith("$Game")) {
-                        gameClasses.add(file.getName().replace(".class", ""));
+            jarFile.stream().forEach(entry -> {
+                if (entry.getName().startsWith("asciiGames/games/") && !entry.isDirectory()) {
+                    if (entry.getName().replace(".class", "").endsWith("$Game")) {
+                        gameClasses.add(entry.getName().replace(".class", "").replace("/", "."));
                     }
                 }
-            }
+            });
             for (String gameClassName : gameClasses) {
-                Class<?> gameClass = Class.forName(packagePath + ".games." + gameClassName);
+                Class<?> gameClass = Class.forName(gameClassName);
                 Field[] fields = gameClass.getFields();
                 String[] fieldValue = new String[fields.length];
                 int i = 0;
@@ -46,7 +51,34 @@ public class manager {
                         i++;
                     }
                 }
-                gameS.add(new Object[]{gameClassName, fieldValue[0], fieldValue[1]});
+                gameS.add(new Object[]{gameClassName.replace("asciiGames.games.", ""), fieldValue[0], fieldValue[1]});
+            }
+            jarFile.close();
+        } else {
+            File folder = new File(gamespath.getPath());
+            File[] listOfFiles = folder.listFiles();
+            if (listOfFiles != null && listOfFiles.length > 0) {
+                ArrayList<String> gameClasses = new ArrayList<String>();
+                for (File file : listOfFiles) {
+                    if (file.isFile() && file.getName().endsWith(".class")) {
+                        if (file.getName().replace(".class", "").endsWith("$Game")) {
+                            gameClasses.add(file.getName().replace(".class", ""));
+                        }
+                    }
+                }
+                for (String gameClassName : gameClasses) {
+                    Class<?> gameClass = Class.forName(packagePath + ".games." + gameClassName);
+                    Field[] fields = gameClass.getFields();
+                    String[] fieldValue = new String[fields.length];
+                    int i = 0;
+                    for (Field field : fields) {
+                        if (field.getType().equals(String.class)) {
+                            fieldValue[i] = (String) field.get(null);
+                            i++;
+                        }
+                    }
+                    gameS.add(new Object[]{gameClassName, fieldValue[0], fieldValue[1]});
+                }
             }
         }
     }
@@ -85,6 +117,7 @@ public class manager {
             return;
         }
         try {
+            System.out.println("Starting game: " + array[start - 1][0]);
             Class<?> clazz = Class.forName(packagePath + ".games." + array[start - 1][0]+"");
             Method method = clazz.getMethod("start", boolean.class, boolean.class);
             ascii.clear();

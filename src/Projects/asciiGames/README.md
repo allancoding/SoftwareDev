@@ -39,9 +39,22 @@ public class Chess {
 ```
 Note: The methods will need to be static.
 
+## Build
+You can easily build the project by running the `build.sh` script. It will out put a jar called `asciiGames.jar`.
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+## Run
+To run the jar file:
+```bash
+java -jar asciiGames.jar
+```
+
 ## Dependencies
-- [Java](https://www.java.com/) - 8+
-- [Janis](https://github.com/fusesource/jansi) - 2.4.1+
+- [Java](https://www.java.com/) 8 or higher is required.
+- [Janis](https://github.com/fusesource/jansi) 2.4.1 or higher is required.
 
 ## Docs for the `ascii` class
 The asscii class is used as a helper class for asscii. It has a few methods that can be used to help with the game.
