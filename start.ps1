@@ -38,6 +38,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     Start-Process -FilePath CMD.exe -ArgumentList $vscode
     winget install -e --id 7zip.7zip
     winget install nodejs
+    winget install -e --id Python.Python.3.11
     winget install --id=Microsoft.VCRedist.2015+.x64  -e
     winget install -e -i --id=9PC6682RJCDD --source=msstore --accept-package-agreements --accept-source-agreements
     exit
