@@ -15,28 +15,27 @@
 /* Page Body Styles */
 body {
    width: 90%;
-   min: 600px;
-   max: 1024px;
+   min-width: 600px;
+   max-width: 1024px;
    margin: 10px auto;
-   
    display: grid;
-   grid-columns-template: 200px auto 200px; 
-   grid-areas-template: "header header header";
-                        "link link link";
-                        "nav main side";
-                        "nav coupons side";
+   grid-template-columns: 200px auto 200px; 
+   grid-template-areas: "header header header",
+                        "link link link",
+                        "nav main side",
+                        "nav coupons side",
                         "footer footer footer";
    grid-gap: 10px/25px;
 }
 
 /* Grid Areas */
-header {grid-area: headers;}
-nav.horizontal {grid-area: links;}
-nav.vertical {grid-area: navs;}
+header {grid-area: header;}
+nav.horizontal {grid-area: link;}
+nav.vertical {grid-area: nav;}
 article {grid-area: main;}
-section {grid-area: coupons}
-aside {grid-area: sides;}
-footer {grid-area: footers;}
+section {grid-area: coupons;}
+aside {grid-area: side;}
+footer {grid-area: footer;}
 
 /* Image Styles */
 header img {
@@ -48,7 +47,7 @@ header img {
 nav.horizontal ul {
    width: 100%;
    display: grid;
-   grid-columns-template: repeat 5/1fr;
+   grid-template-columns: repeat 5/1fr;
 }
 nav.horizontal ul li {
    display: block;
@@ -58,7 +57,7 @@ nav.horizontal ul li {
 /* Coupon Section Styles */
 section {
    display: grid;
-   grid-columns-template: repeat 3/1fr;
+   grid-template-columns: repeat 3/1fr;
    grid-gap: 20px;
 }
 
