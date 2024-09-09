@@ -5,8 +5,8 @@
    Tutorial 3
    Coding Challenge 4
 
-   Author: 
-   Date:   
+   Author: Allan Niles
+   Date:   9/9/2024
    
    Filename: debug3-4.css
 
@@ -20,10 +20,10 @@ body {
    margin: 10px auto;
    display: grid;
    grid-template-columns: 200px auto 200px; 
-   grid-template-areas: "header header header",
-                        "link link link",
-                        "nav main side",
-                        "nav coupons side",
+   grid-template-areas: "header header header"
+                        "link link link"
+                        "nav main side"
+                        "nav coupons side"
                         "footer footer footer";
    grid-gap: 10px/25px;
 }
@@ -47,7 +47,8 @@ header img {
 nav.horizontal ul {
    width: 100%;
    display: grid;
-   grid-template-columns: repeat 5/1fr;
+   grid-template-columns: repeat(5, 1fr);
+   padding-top: 6px;
 }
 nav.horizontal ul li {
    display: block;
@@ -57,8 +58,9 @@ nav.horizontal ul li {
 /* Coupon Section Styles */
 section {
    display: grid;
-   grid-template-columns: repeat 3/1fr;
+   grid-template-columns: repeat(3, 1fr);
    grid-gap: 20px;
+   padding: 10px;
 }
 
 section div {
@@ -66,7 +68,7 @@ section div {
    position: relative;
 }
 
-section div p.last-of-type {
+section div p:last-of-type {
    position: absolute;
    bottom: 1px;
    right: 5px;
