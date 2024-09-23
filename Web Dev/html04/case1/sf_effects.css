@@ -6,17 +6,18 @@
    Case Problem 1
    
    Save your Fork Graphic Design Styles
-   Author: 
-   Date:   
+   Author: Allan Niles
+   Date:   9/23/2024
 
    Filename: sf_effects.css
 
 */
 
 /* Body Header Styles */
-
-
-
+body {
+    box-shadow: -10px 0px 50px 10px rgb(51, 51, 51),
+                10px 0px 50px 10px rgb(51, 51, 51);
+}
 /* Navigation Tabs List Styles */
 
 
