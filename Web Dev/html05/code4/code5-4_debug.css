@@ -5,8 +5,8 @@
    Tutorial 5
    Coding Challenge 4
    
-   Author: 
-   Date:   
+   Author: Allan Niles
+   Date:   9/27/2024
    Filename: code5-4_debug.css
 
 */
@@ -16,14 +16,15 @@ header {
 }
 
 body {
-   display: flexbox;
-   flex-float: column nowrap;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: nowrap;
 }
 
-@media max-width: 500px {
+@media (max-width: 500px) {
    
    nav {
-      flex-order: 3;
+      order: 3;
    }
    
    article img {
@@ -31,9 +32,11 @@ body {
    }
 }
 
-@media min-width: 501px and max-width: 800px {
+@media (min-width: 501px) and (max-width: 800px) {
    body {
-      flex-float: row wrap;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
    }
    
    header {
@@ -54,10 +57,10 @@ body {
    }
 }
 
-@media min-width: 801px {
+@media (min-width: 801px) {
    
    nav ul {
-      display: flexbox;
+      display: flex;
       justify-content: center;
    }
 
