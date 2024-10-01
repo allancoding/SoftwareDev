@@ -7,8 +7,8 @@
       Tutorial Case
 
       DLR Nightly Schedule
-      Author: 
-      Date:   
+      Author: Allan Niles
+      Date:   10/1/2024
 
       Filename:   dlr_evenings.html
 
@@ -18,7 +18,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1" />
    <title>DLR Nightly Schedule</title>
    <link href="dlr_reset.css" rel="stylesheet" />
-   <link href="dlr_styles.css" rel="stylesheet" />     
+   <link href="dlr_styles.css" rel="stylesheet" />
+   <link href="dlr_tables.css" rel="stylesheet" />     
 </head>
 
 <body>
@@ -49,7 +50,75 @@
             You can <a href="#">Listen Live</a> to streaming audio 
             of our broadcast. Please refer below for our current 
             nightly schedule.</p>
-         
+         <table class="schedule">
+            <caption>All Times Central</caption>
+            <colgroup>
+               <col id="firstCol" />
+               <col class="dayCols" span="7" />
+            </colgroup>
+            <thead>
+               <th>Time</th>
+               <th>Mon</th>
+               <th>Tue</th>
+               <th>Wed</th>
+               <th>Thu</th>
+               <th>Fri</th>
+               <th>Sat</th>
+               <th>Sun</th>
+            </thead>
+            <tbody>
+               <th>6:00 PM</th>
+               <td colspan="7">National News</td>
+            </tr>
+            <tr>
+               <th>6:30 PM</th>
+               <td colspan="7">World News</td>
+            </tr>
+            <tr>
+               <th>7:00 PM</th>
+               <td rowspan="2">Opera Fest</td>
+               <td rowspan="2">Radio U</td>
+               <td rowspan="2">Science Week</td>
+               <td rowspan="2">The Living World</td>
+               <td>Word Play</td>
+               <td>Agri-Week</td>
+               <td rowspan="2">Folk Fest</td>
+            </tr>
+            <tr>
+               <th>7:30 PM</th>
+               <td>Brain Stew</td>
+               <td>Bismarck Forum</td>
+            </tr>
+            <tr>
+               <th>8:00 PM</th>
+               <td rowspan="4" colspan="4">The Classical Music
+              Connection</td>
+               <td>Old Time Radio</td>
+               <td rowspan="4">Saturday Nite Jazz</td>
+               <td rowspan="4">The Indie Connection</td>
+            </tr>
+            <tr>
+               <th>8:30 PM</th>
+               <td>The Inner Mind</td>
+            </tr>
+            <tr>
+               <th>9:00 PM</th>
+               <td rowspan="2">Open Mike Nite</td>
+            </tr>
+            <tr>
+               <th>9:30 PM</th>
+            </tr>
+            <tr>
+               <th>10:00 PM</th>
+               <td colspan="7">World News Feed</td>
+            </tbody>
+            <tfoot>
+               <tr>
+                  <td colspan="8">DLR ends its broadcast day at
+              10:30 p.m.</td>
+               </tr>
+            </tfoot>    
+         </table>
       </section>
       
       <section id="right">
