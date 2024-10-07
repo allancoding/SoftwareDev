@@ -7,8 +7,8 @@
       Tutorial Case
 
       Red Ball Pizza Survey Form
-      Author: 
-      Date:   
+      Author: Allan Niles
+      Date:   10/7/2024
 
       Filename:   rb_survey.html
 
@@ -19,7 +19,7 @@
    <title>Red Ball Survey</title>
    <link href="rb_reset.css" rel="stylesheet" />
    <link href="rb_styles.css" rel="stylesheet" />
-
+   <script src="rb_formsubmit.js"></script>
 </head>
 
 <body>
@@ -52,7 +52,28 @@
          parties, <em>ever</em>. </p>
       <p>Required values are marked by an asterisk (*)</p>
 
-     
+      <form id="survey" action="http://www.example.com/redball/survey" method="post">
+         <fieldset id="custInfo">
+            <legend>Customer Information</legend>
+            <label for="name">Name*</label>
+            <input name="custName" id="name" type="text" />
+            <label for="street">Street Address</label>
+            <input name="custStreet" id="street" type="text" />
+            City
+            <input name="custCity" id="city" type="text" />
+            State
+            <input name="custState" id="state" type="text" />
+            Postal code
+            <input name="custZip" id="zip" type="text" />
+            Phone number
+            <input name="custPhone" id="phone" type="tel" />
+            E-mail*
+            <input name="custEmail" id="mail" type="email" />
+         </fieldset>
+         <fieldset id="expInfo">
+            <legend>Share Your Experience at Red Ball Pizza</legend>
+         </fieldset>
+      </form>
    </section>
    <footer>
       <h1>ORDER</h1>
