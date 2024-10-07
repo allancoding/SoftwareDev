@@ -11,7 +11,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     Start-Process ms-settings:personalization-colors
     Invoke-WebRequest -Uri "https://winget.azureedge.net/cache/source.msix" -OutFile "source.msix"
     Add-AppxPackage -Path ".\source.msix"
-    winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements --override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders,addtopath"'
+    # winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements --override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders,addtopath"'
     Set-Location "C:\Users\student\Documents"
     git clone https://github.com/allancoding/SoftwareDev
     git config --global user.name "Allan Niles"
@@ -34,12 +34,13 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 "@
     Add-Type -TypeDefinition $setwallpapersrc
     [Wallpaper]::SetWallpaper("C:\Users\student\Documents\SoftwareDev\wallpaper.jpg")
+    rm "C:\Users\student\AppData\Roaming\Code\User\settings.json"
     $vscode = "/c start """" ""C:\Users\student\AppData\Local\Programs\Microsoft VS Code\Code.exe"" ""."" && exit"
     Start-Process -FilePath CMD.exe -ArgumentList $vscode
     winget install -e --id 7zip.7zip
     winget install OpenJS.NodeJS
     winget install -e --id Yarn.Yarn
-    winget install -e --id Python.Python.3.11 --scope machine
+    # winget install -e --id Python.Python.3.11 --scope machine
     winget install --id=Microsoft.VCRedist.2015+.x64  -e
     winget install -e -i --id=9PC6682RJCDD --source=msstore --accept-package-agreements --accept-source-agreements
     Start-Process cmd -ArgumentList "/c", "npm install --global yarn"
