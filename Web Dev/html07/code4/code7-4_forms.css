@@ -53,3 +53,7 @@ input[type="submit"] {
    display: inline-block;
    margin: 10px auto
 }
+
+::placeholder {
+   color: black;
+}
