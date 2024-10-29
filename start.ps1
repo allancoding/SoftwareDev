@@ -40,6 +40,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     winget install -e --id 7zip.7zip
     winget install OpenJS.NodeJS
     winget install -e --id Yarn.Yarn
+    winget install ffmpeg
     # winget install -e --id Python.Python.3.11 --scope machine
     winget install --id=Microsoft.VCRedist.2015+.x64  -e
     winget install -e -i --id=9PC6682RJCDD --source=msstore --accept-package-agreements --accept-source-agreements

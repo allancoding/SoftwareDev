@@ -13,16 +13,13 @@
 */
 
 showImage()
-setInterval(showImage(), 5);
+setInterval("showImage()", 5000);
 
 function showImage() {
-   var slideNumber = randNumber(1, 14);
-   document.getelementbyid(slide).src = "slide" + slidenumber + ".jpg";
-   document.getelementbyid(slidecaption).textcontent = getCaption(slidenumber);
+   var slidenumber = randNumber(1, 14);
+   document.getElementById("slide").src = "slide" + slidenumber + ".jpg";
+   document.getElementById("slidecaption").textContent = getCaption(slidenumber);
 }
-
-
-
 
 /* ------------------------------------------
 
@@ -49,6 +46,5 @@ function getCaption(slide) {
    captions[12]="The International Space Station third expansion [2007]";
    captions[13]="The ISS over the Ionian Sea [2007]";
    captions[14]="International Space Station fourth expansion [2009]";
-
    return captions[slide];
 }
