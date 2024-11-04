@@ -6,8 +6,8 @@
    Coding Challenge 2
 
    Debug
-   Author: 
-   Date:   
+   Author: Allan Niles
+   Date:   11/4/2024
 
 
 */
@@ -60,3 +60,11 @@ links[7] = "https://www.imdb.com/title/tt0060196/?ref_=adv_li_tt";
 links[8] = "https://www.imdb.com/title/tt0050083/?ref_=adv_li_tt";
 links[9] = "https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt";
 
+var htmlCode = "<table><thead><tr><th>Movie</th><th>Description</th><th>Score</th></tr></thead><tbody></tbody>";
+
+for (var i = 0; i < 10; i++) {
+    htmlCode += "<tr><td><a href='" + links[i] + "'>" + titles[i] + "</a><td>" + summaries[i] + "</td><td>" + ratings[i] + "</td></tr>";
+}
+
+htmlCode += "</tbody></table>";
+document.getElementById("list").innerHTML = htmlCode;
