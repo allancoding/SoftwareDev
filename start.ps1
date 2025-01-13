@@ -45,5 +45,18 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     winget install --id=Microsoft.VCRedist.2015+.x64  -e
     winget install -e -i --id=9PC6682RJCDD --source=msstore --accept-package-agreements --accept-source-agreements
     Start-Process cmd -ArgumentList "/c", "npm install --global yarn"
+    $apacheConfig = Get-Content -Path "C:\MAMP\conf\apache\httpd.conf"
+    $documentRootLine = Select-String -Pattern "^\s*DocumentRoot\s+" -InputObject $apacheConfig
+    if ($documentRootLine) {
+        $newDocumentRoot = '"C:\Users\student\Documents\SoftwareDev\PHP"'
+        $newConfig = $apacheConfig | ForEach-Object {
+            if ($_ -match "^\s*DocumentRoot\s+") {
+                "DocumentRoot $newDocumentRoot"
+            } else {
+                $_ 
+            }
+        }
+        Set-Content -Path "C:\path\to\your\apache\conf\httpd.conf" -Value $newConfig
+    }
     exit
 }
