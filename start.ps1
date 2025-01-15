@@ -45,18 +45,15 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     winget install --id=Microsoft.VCRedist.2015+.x64  -e
     winget install -e -i --id=9PC6682RJCDD --source=msstore --accept-package-agreements --accept-source-agreements
     Start-Process cmd -ArgumentList "/c", "npm install --global yarn"
-    $apacheConfig = Get-Content -Path "C:\MAMP\conf\apache\httpd.conf"
-    $documentRootLine = Select-String -Pattern "^\s*DocumentRoot\s+" -InputObject $apacheConfig
-    if ($documentRootLine) {
-        $newDocumentRoot = '"C:\Users\student\Documents\SoftwareDev\PHP"'
-        $newConfig = $apacheConfig | ForEach-Object {
-            if ($_ -match "^\s*DocumentRoot\s+") {
-                "DocumentRoot $newDocumentRoot"
-            } else {
-                $_ 
-            }
-        }
-        Set-Content -Path "C:\path\to\your\apache\conf\httpd.conf" -Value $newConfig
-    }
+    $filePath = "C:\MAMP\conf\apache\httpd.conf"
+    $fileContent = Get-Content $filePath
+    $newLine = 'DocumentRoot "C:\Users\student\Documents\SoftwareDev\PHP"'
+    $fileContent = $fileContent -replace '^DocumentRoot "C:\\MAMP\\htdocs"', $newLine
+    $fileContent | Set-Content $filePath
+    $afilePath = "C:\MAMP\conf\apache\httpd.conf"
+    $afileContent = Get-Content $afilePath
+    $anewLine = 'Options FollowSymLinks ExecCGI Includes Indexes'
+    $afileContent = $afileContent -replace '^Options FollowSymLinks ExecCGI Includes', $anewLine
+    $afileContent | Set-Content $afilePath
     exit
 }
