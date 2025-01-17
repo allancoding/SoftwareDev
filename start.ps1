@@ -52,8 +52,8 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     $fileContent | Set-Content $filePath
     $afilePath = "C:\MAMP\conf\apache\httpd.conf"
     $afileContent = Get-Content $afilePath
-    $anewLine = 'Options FollowSymLinks ExecCGI Includes Indexes'
-    $afileContent = $afileContent -replace '^Options FollowSymLinks ExecCGI Includes', $anewLine
+    $anewLine = '    Options FollowSymLinks ExecCGI Includes Indexes'
+    $afileContent = $afileContent -replace '^    Options FollowSymLinks ExecCGI Includes', $anewLine
     $afileContent | Set-Content $afilePath
     exit
 }
