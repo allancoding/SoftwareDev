@@ -1,33 +1,24 @@
 <?php
 
-//create short variable names
-$name=$_POST['name'];
-$email=$_POST['email'];
-$feedback=$_POST['feedback'];
+$name = $_POST['name'];
+$email = $_POST['email'];
+$feedback = $_POST['feedback'];
 
-//set up some static information
-$toaddress = "feedback@example.com";
-
-$subject = "Feedback from web site";
-
-$mailcontent = "Customer name: ".filter_var($name)."\n".
-               "Customer email: ".$email."\n".
-               "Customer comments:\n".$feedback."\n";
-
-$fromaddress = "From: webserver@example.com";
-
-mail($toaddress, $subject, $mailcontent, $fromaddress);
+$file = 'feedback.txt';
+$entry = date('Y-m-d H:i:s') . " - Name: " . $name . " - Email: " . $email . " - " . "Feedback: " . $feedback . "\n---\n";
+file_put_contents($file, $entry, FILE_APPEND);
 
 ?>
+
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Bob's Auto Parts - Feedback Submitted</title>
-  </head>
-  <body>
+</head>
+<body>
 
-    <h1>Feedback submitted</h1>
-    <p>Your feedback has been sent.</p>
+<h1>Feedback submitted</h1>
+<p>Your feedback has been sent.</p>
 
-  </body>
+</body>
 </html>

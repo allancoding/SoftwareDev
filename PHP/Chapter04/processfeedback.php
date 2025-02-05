@@ -1,11 +1,9 @@
 <?php
 
-//create short variable names
 $name=$_POST['name'];
 $email=$_POST['email'];
 $feedback=$_POST['feedback'];
 
-//set up some static information
 $toaddress = "feedback@example.com";
 
 $subject = "Feedback from web site";
