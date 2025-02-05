@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bob's Auto Parts - Customer Feedback</title>
+    <style>
+      .video-right {
+        top: 0;
+        right: 0;
+        position: fixed;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body onclick="document.getElementById('feedbackVideo').muted = false;">
+
+    <h1>Customer Feedback</h1>
+    <p>Please tell us what you think.</p>
+
+    <form action="processfeedback.php" method="post">
+    <p><strong>Your name:</strong><br/>
+    <input type="text" name="name" size="40" /></p>
+     
+    <p><strong>Your email address:</strong><br/>
+    <input type="text" name="email" size="40" /></p>
+     
+    <p><strong>Your feedback:</strong><br/>
+    <textarea name="feedback" rows="8" cols="40">
+    </textarea></p>
+     
+    <p><input type="submit" value="Send Feedback" /></p>  
+    </form>
+    <video id="feedbackVideo" class="video-right" autoplay muted>
+      <source src="assets/Jason.mp4" type="video/mp4">
+    </video>
+  </body>
+</html>
