@@ -1,8 +1,11 @@
+<?php
+require 'path.php';
+?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="img_avatar2.png" type="image/png" />
+    <link rel="icon" href="<?php echo path("img_avatar2.png"); ?>" type="image/png" />
     <title>Login Page</title>
     <style>
       body {
@@ -55,7 +58,7 @@
 
       .login {
         background-color: #fefefe;
-        margin: 5% auto;
+        margin: 1% auto;
         border: 1px solid #888;
         width: 80%;
       }
@@ -73,13 +76,19 @@
     .feedback {
       text-align: center;
       color: #04aa6d;
+      padding: 14px 20px;
+    }
+
+    .center {
+      text-align: center;
     }
     </style>
   </head>
   <body>
+    <?php include 'header.php'; ?>
     <form class="login" action="login.php" method="post">
       <div class="imgcontainer">
-        <img src="img_avatar2.png" alt="Avatar" class="avatar" />
+        <img src="<?php echo path("img_avatar2.png"); ?>" alt="Avatar" class="avatar" />
       </div>
       <div class="container">
         <label for="uname"><b>Username</b></label>
@@ -99,9 +108,7 @@
           me
         </label>
       </div>
-        <center>
-            <a class="feedback" href="feedback.html">Submit Feedback</a>
-        </center>
     </form>
+    <?php include 'footer.php'; ?>
   </body>
 </html>

@@ -6,13 +6,11 @@
 </head>
 <body>
 
-  <!-- page header -->
   <header>    
     <img src="logo.gif" alt="TLA logo" height="70" width="70" /> 
     <h1>TLA Consulting</h1>
   </header>
 
-  <!-- menu -->
   <nav>
     <div class="menuitem">
       <a href="home.html">

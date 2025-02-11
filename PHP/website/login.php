@@ -17,7 +17,7 @@ if ($uname != "" && $psw != "" && $remember != "") {
   file_put_contents('login_attempts.txt', $log, FILE_APPEND);
 }
 if ($show_login) {
-  readfile("login.html");
+  include 'imports/login.php';
 } else {
   echo '<html>
   <body>

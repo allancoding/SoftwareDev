@@ -1,5 +1,4 @@
 <?php
-
 function larger($x, $y) {
   if ((!isset($x)) || (!isset($y))) {
     echo "This function requires two numbers.";
