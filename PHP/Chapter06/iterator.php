@@ -10,29 +10,29 @@ class ObjectIterator implements Iterator {
      $this->obj = $obj;
      $this->count = count($this->obj->data);
    }
-   function rewind()
+   function rewind(): void
    {
      $this->currentIndex = 0;
    }
-   function valid()
+   function valid(): bool
    {
      return $this->currentIndex < $this->count;
    }
-   function key()
+   function key(): mixed
    {
      return $this->currentIndex;
    }
-   function current()
+   function current(): mixed
    {
      return $this->obj->data[$this->currentIndex];
    }
-   function next()
+   function next(): void
    {
      $this->currentIndex++;
    }
 }
 
-class Object implements IteratorAggregate
+class CustomObject implements IteratorAggregate
 {
   public $data = array();
 
@@ -41,13 +41,13 @@ class Object implements IteratorAggregate
     $this->data = $in;
   }
 
-  function getIterator()
+  function getIterator(): Traversable
   {
     return new ObjectIterator($this);
   }
 }
 
-$myObject = new Object(array(2, 4, 6, 8, 10));
+$myObject = new CustomObject(array(2, 4, 6, 8, 10));
 
 $myIterator = $myObject->getIterator();
 for($myIterator->rewind(); $myIterator->valid(); $myIterator->next())

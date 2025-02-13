@@ -1,7 +1,6 @@
 <?php
 class Page
 {
-  // class Page's attributes
   public $content;
   public $title = "TLA Consulting Pty Ltd";
   public $keywords = "TLA Consulting, Three Letter Abbreviation, 
@@ -12,7 +11,6 @@ class Page
                         "Site Map" => "map.php"
                     );
 
-  // class Page's operations
   public function __set($name, $value)
   {
     $this->$name = $value;
@@ -52,7 +50,6 @@ class Page
   public function DisplayHeader()
   { 
     ?>   
-    <!-- page header -->
     <header>    
       <img src="logo.gif" alt="TLA logo" height="70" width="70" /> 
       <h1>TLA Consulting</h1>
@@ -106,7 +103,6 @@ class Page
   public function DisplayFooter()
   {
     ?>
-    <!-- page footer -->
     <footer>
       <p>&copy; TLA Consulting Pty Ltd.<br />
       Please see our 
