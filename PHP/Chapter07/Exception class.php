@@ -7,23 +7,41 @@ class Exception
     protected $file;                            // source filename of exception
     protected $line;                            // source line of exception
     private   $trace;                           // backtrace
-    private   $previous;                        // previous exception if nested
-                                                   exception
+    private   $previous;                        // previous exception if nested exception
 
-    public function __construct($message = null, $code = 0, Exception $previous =
-null);
+public function __construct($message = null, $code = 0, Exception $previous = null) {
+    $this->message = $message;
+    $this->code = $code;
+    $this->previous = $previous;
+}
 
-    final private function __clone();           // Inhibits cloning of exceptions.
+    final private function __clone() {}         // Inhibits cloning of exceptions.
 
-    final public  function getMessage();        // message of exception
-    final public  function getCode();           // code of exception
-    final public  function getFile();           // source filename
-    final public  function getLine();           // source line
-    final public  function getTrace();          // an array of the backtrace()
-    final public  function getPrevious();       // previous exception
-    final public  function getTraceAsString();  // formatted string of trace
+    final public  function getMessage() {       // message of exception
+        return $this->message;
+    }
+    final public  function getCode() {          // code of exception
+        return $this->code;
+    }
+    final public  function getFile() {          // source filename
+        return $this->file;
+    }
+    final public  function getLine() {          // source line
+        return $this->line;
+    }
+    final public  function getTrace() {         // an array of the backtrace()
+        return $this->trace;
+    }
+    final public  function getPrevious() {      // previous exception
+        return $this->previous;
+    }
+    final public  function getTraceAsString() { // formatted string of trace
+        return implode("\n", $this->trace);
+    }
 
     /* Overrideable */
-    public function __toString();               // formatted string for display
+    public function __toString() {              // formatted string for display
+        return (string) $this->getMessage();
+    }
 }
 ?>
