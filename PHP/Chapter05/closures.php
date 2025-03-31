@@ -1,16 +1,17 @@
 <?php
+$printer = function($value){ echo "$value <br/>";};
 
-$printer =  function($value){ echo "$value <br/>"; };
+$products = [ 
+    'Tires' => 100,
+    'Oi.' => 10,
+    'Spark Plugs' => 4
+];
 
-$products = [ 'Tires' => 100, 
-              'Oil' => 10,
-              'Spark Plugs' => 4 ]; 
+$markup = 0.2;
 
-$markup = 0.20;
-
-$apply = function(&$val) use ($markup) {
-           $val = $val * (1+$markup);
-         };
+$apply = function(&$val) use ($markup){
+    $val = $val * (1+$markup);
+};
 
 array_walk($products, $apply);
 
