@@ -12,9 +12,8 @@ exec('ls -la', $result);
 // windows
 // exec('dir', $result);
 
-foreach ($result as $line)
-{
-   echo $line.PHP_EOL;
+foreach ($result as $line) {
+   echo $line . PHP_EOL;
 }
 
 echo '</pre>';
@@ -25,7 +24,7 @@ echo '<h1>Using passthru()</h1>';
 echo '<pre>';
 
 // unix
-passthru('ls -la') ;
+passthru('ls -la');
 
 // windows
 // passthru('dir');
