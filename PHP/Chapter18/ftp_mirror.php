@@ -7,14 +7,12 @@
 	<h1>Mirror Update</h1>
 
 <?php
-// set up variables - change these to suit application
 $host = 'apache.cs.utah.edu';
 $user = 'anonymous';
 $password = 'me@example.com';
 $remotefile = '/apache.org/httpd/httpd-2.4.16.tar.gz';
 $localfile = '/path/to/files/httpd-2.4.16.tar.gz';
 
-// connect to host
 $conn = ftp_connect($host);
 if (!$conn) {
 	echo 'Error: Could not connect to ' .$host;
@@ -23,7 +21,6 @@ if (!$conn) {
 
 echo 'Connected to ' .$host. '<br />';
 
-// Log in to host
 $result = @ftp_login($conn, $user, $password);
 if (!$result) {
 	echo 'Error: Could not log in as ' .$user;
@@ -33,10 +30,8 @@ if (!$result) {
 
 echo 'Logged in as ' .$user. '<br />';
 
-// Turn on passive mode
 ftp_pasv($conn, true);
 
-// Check file times to see if an update is required
 echo 'Checking file time...<br/>';
 
 if (file_exists($localfile)) {
@@ -51,9 +46,8 @@ else{
 
 $remotetime = ftp_mdtm($conn, $remotefile);
 if (!($remotetime >= 0)) {
-	// This doesn't mean the file's not there, server may not support mod time
 	echo 'Can\'t access remote file time.<br/>';
-	$remotetime = $localtime+1; // make sure of an update
+	$remotetime = $localtime+1;
 }
 else{
 	echo 'Remote file last updated ';
@@ -66,7 +60,6 @@ if (!($remotetime > $localtime)) {
 	exit();
 }
 
-// download file
 echo 'Getting file from server...<br/>';
 $fp = fopen($localfile, 'wb');
 
@@ -80,7 +73,6 @@ if (!$success = ftp_fget($conn, $fp, $remotefile, FTP_BINARY)) {
 fclose($fp);
 echo 'File downloaded successfully.';
 
-// cloe connection to host
 ftp_close($conn);
 ?>
 </body>
